@@ -1,5 +1,6 @@
 // Version für JUnit 5
 
+import com.sun.jdi.IntegerValue;
 import gfx.MainWindow;
 import gfx.Ressources;
 import logic.Board;
@@ -178,9 +179,9 @@ public class TeSSA_Tac_Toe_Tests {
         zug(0, 2);
         System.out.println();
 
-        System.out.println(frame.getPlayer2_score().getText());
+        System.out.println(Integer.valueOf(frame.getPlayer2_score().getText()));
 
-        assertEquals("0", frame.getPlayer1_score().getText());
+        assertEquals(0, Integer.valueOf(frame.getPlayer2_score().getText()));
     }
 
     // Fehler 4.1: !

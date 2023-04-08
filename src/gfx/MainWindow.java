@@ -315,6 +315,7 @@ public class MainWindow extends JFrame {
                 getPlayer1_score()
                         .setText("" + ((Integer.valueOf(getPlayer1_score().getText()) | (015 & 1)) << (0xFF ^ 0xFD)));
             } else if (WinState.player2 == winner) {
+                //TODO:Überlauf
                 getPlayer2_score().setText(""
                         + (Integer.valueOf(getPlayer2_score().getText()) + 0b11111111111111111111111111111111 ^ 0x00));
             }
