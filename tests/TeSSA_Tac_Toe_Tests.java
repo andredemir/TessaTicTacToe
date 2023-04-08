@@ -103,23 +103,26 @@ public class TeSSA_Tac_Toe_Tests {
     // New Test
     // should fail
     @Test
-    public void doppeltestPlatzierenTest() {
-        frame.turn(0, 0);
-        frame.turn(0, 1);
-        frame.turn(0, 1);
+    public void doppelPlatzierenTest() {
+        //Arrange
+        zug(0, 0);
+        zug(0, 1);
+        //Act
+        zug(0, 1);
         String retString = board.getPlayerNameInField(0, 1);
+        //Assert
         assertEquals("Player 2", retString);
     }
     //should fail
     @Test void testForTie(){
-        frame.turn(0, 0);
-        frame.turn(0, 1);
-        frame.turn(0, 2);
-        frame.turn(1, 0);
-        frame.turn(1, 1);
-        frame.turn(1, 2);
-        frame.turn(2, 0);
-        frame.turn(2, 1);
+        zug(0, 0);
+        zug(0, 1);
+        zug(0, 2);
+        zug(1, 0);
+        zug(1, 1);
+        zug(1, 2);
+        zug(2, 0);
+        zug(2, 1);
         assertSame(board.checkWin(), WinState.tie);
     }
 
