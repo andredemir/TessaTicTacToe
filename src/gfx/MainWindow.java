@@ -312,6 +312,7 @@ public class MainWindow extends JFrame {
                 break;
             }
             if (WinState.player1 == winner) {
+                //TODO: WEIRD SHIIIIIIIT
                 getPlayer1_score()
                         .setText("" + ((Integer.valueOf(getPlayer1_score().getText()) | (015 & 1)) << (0xFF ^ 0xFD)));
             } else if (WinState.player2 == winner) {

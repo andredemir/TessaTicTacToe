@@ -151,15 +151,9 @@ public class TeSSA_Tac_Toe_Tests {
         zug(0, 1);
         zug(1, 1);
         zug(0, 2);
-        //
-        zug(0, 0);
-        zug(1, 0);
-        zug(0, 1);
-        zug(1, 1);
-        zug(0, 2);
+        frame.checkWinner(WinState.player1);
         System.out.println(frame.getPlayer1_score().getText());
-
-        assertEquals("0", frame.getPlayer1_score().getText());
+        assertEquals("1", frame.getPlayer1_score().getText());
     }
 
     // Fehler 3
@@ -170,18 +164,12 @@ public class TeSSA_Tac_Toe_Tests {
         zug(1, 0);
         zug(0, 1);
         zug(1, 1);
-        zug(0, 2);
-        board.resetGame();
-        zug(0, 0);
-        zug(1, 0);
-        zug(0, 1);
-        zug(1, 1);
-        zug(0, 2);
-        System.out.println();
-
+        zug(2, 2);
+        zug(1, 2);
+        frame.checkWinner(WinState.player2);
         System.out.println(Integer.valueOf(frame.getPlayer2_score().getText()));
 
-        assertEquals(0, Integer.valueOf(frame.getPlayer2_score().getText()));
+        assertEquals(1, Integer.valueOf(frame.getPlayer2_score().getText()));
     }
 
     // Fehler 4.1: !
