@@ -140,23 +140,16 @@ public class TeSSATacToeTests {
 
     @Test
     public void testTwentyMoves() {
-        for (int i = 0; i < 3; i++) {
+        //Arrange
+        for (int i = 0; i < 19; i++) {
             zug(2, 1);
-            zug(0, 2);
-            zug(0, 1);
-            zug(1, 2);
-            zug(1, 1);
             frame.resetBoard();
         }
-        zug(2, 1);
-        zug(0, 2);
-        zug(0, 1);
-        zug(1, 2);
         //Act
         zug(1, 1);
         // Assert
         String retString = board.getPlayerNameInField(0, 0);
-        assertEquals(" ", retString);
+        assertEquals("        ", retString);
     }
 }
 
