@@ -211,6 +211,13 @@ public class TeSSA_Tac_Toe_Tests {
         assertEquals(board.checkWin(), WinState.none);
     }
 
+    // Fehler 5
+    @Test void testGanzUntenRechts(){
+        zug(3, 3);
+        System.out.println(board.getPlayerNameInField(3, 3));
+        assertEquals(board.getPlayerNameInField(3, 3), "Player 1");
+    }
+
     // nicht im Dokument
     @Test
     public void testNextTurn() {
@@ -229,7 +236,6 @@ public class TeSSA_Tac_Toe_Tests {
         board.nextTurn();
         assertEquals(p1, board.getActivePlayer());
     }
-
 
 
     @Test
@@ -330,7 +336,7 @@ public class TeSSA_Tac_Toe_Tests {
     4. i und ! Sieg - Chrissy
     5. wth Test von uns der passen könnte - Chrissy
     6. 20. Zug - carina 🖐
-    7. v = Sieg - André
+    7. v = Sieg - André done
     8. unentschieden, obwohl felder frei - Christoph
     9. backlash- formation kein Sieg, wenn es an die rechte Spalte grenzt - Christoph
     10. [4][0} nicht ausgewertet = kein Sieg, wenn benutzt wird - carina 🖐
