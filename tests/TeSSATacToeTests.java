@@ -35,9 +35,16 @@ public class TeSSATacToeTests {
         frame = null;
     }
 
-    // für page object model
+    // Hilfsmethoden für page object model
     public void zug(int reihe, int spalte){
         frame.turn(reihe, spalte);
+    }
+    public WinState testCheckWinState(){
+        return board.checkWin();
+    }
+
+    public void testCheckWinner(WinState wst){
+        frame.checkWinner(wst);
     }
 
     public String getFieldEntry(int reihe, int spalte){
@@ -52,7 +59,7 @@ public class TeSSATacToeTests {
         zug(0, 1);
         //Act
         zug(0, 1);
-        String retString = board.getPlayerNameInField(0, 1);
+        String retString = getFieldEntry(0, 1);
         //Assert
         assertEquals("Player 2", retString);
     }
@@ -68,7 +75,7 @@ public class TeSSATacToeTests {
         //Act
         zug(1, 1);
         //Assert
-        assertSame(WinState.player1, board.checkWin());
+        assertSame(WinState.player1, testCheckWinState());
     }
 
     // Fehler 3
@@ -151,18 +158,156 @@ public class TeSSATacToeTests {
         String retString = board.getPlayerNameInField(0, 0);
         assertEquals("        ", retString);
     }
-}
+
+    @Test
+    public void testFieldDownRight(){
+        //Arrange
+
+        //Act
+        zug(3,3);
+        //Assert
+        String actualResult = getFieldEntry(3,3);
+        assertEquals("Player 1", actualResult);
+    }
+    @Test
+    public void testTie(){
+        //Arrange
+        //Reihe 0
+        zug(0,1);//x
+        zug(0,0);//o
+        zug(0,2);//x
+        //Reihe 1
+        zug(1,1);//o
+        zug(1,0);//x
+        zug(1,2);//o
+        //Reihe 2
+        zug(2,1);//x
+        zug(2,0);//o
+        zug(2,2);//x
+        //Reihe 3
+        zug(3,1);//o
+        zug(3,0);//x
+        //Act
+        zug(3,2);//o
+        //Assert
+
+        assertEquals(WinState.none,testCheckWinState());
+        //actual result
+        //assertEquals(WinState.tie, board.checkWin());
+    }
+
+
+    @Test
+    public void testBackslashDiagonalWinOnRightBorder() {
+        //Arrange
+        zug(0, 1);//x
+        zug(0, 0);//o
+        zug(1, 2);//x
+        zug(1, 0);//o
+        //Act
+        zug(2, 3);//x
+        //Assert
+        assertEquals(WinState.player1, testCheckWinState());
+        //actual result
+        //assertEquals(WinState.none, board.checkWin());
+    }
+    
+    @Test
+    public void testFourZero(){
+        p1 = new Player("Player 1", Ressources.icon_x);
+        p2 = new Player("Player 2", Ressources.icon_o);
+        board = new Board(3, 5, 3, p1, p2);
+        frame = new MainWindow(p1, p2, board);
+
+        frame.turn(0, 4);
+        frame.turn(1, 0);
+
+        frame.turn(1, 3);
+        frame.turn(2, 0);
+
+        frame.turn(2, 2);
+        //frame.turn(0, 0);
+
+        assertSame(WinState.player1, board.checkWin());
+    }
+
+    // ------------------- OUR TESTS END -------------------
+
+    //------------------- TESTS ANFANG -------------------
+/*    @Test
+    public void test01() throws InterruptedException {
+        frame.turn(0, 0);
+        Thread.sleep(TIME_OUT);
+        frame.turn(0, 1);
+        Thread.sleep(TIME_OUT);
+        frame.turn(1, 0);
+        Thread.sleep(TIME_OUT);
+        frame.turn(0, 2);
+        Thread.sleep(TIME_OUT);
+        WinState winner = frame.turn(2, 0);
+        assertSame(WinState.player1, winner);
+    }
+
+    @Test
+    public void test02() {
+        frame.turn(0, 0);
+        String retString = board.getPlayerNameInField(0, 0);
+        assertEquals("Player 1", retString);
+    }
+
+    @Test
+    public void test03() {
+        frame.turn(0, 0);
+        frame.turn(0, 1);
+        String retString = board.getPlayerNameInField(0, 1);
+        assertEquals("Player 2", retString);
+    }
+    @Test
+    public void test04() {
+        String retString = board.getPlayerNameInField(0, 0);
+        assertEquals("        ", retString);
+    }
+
+    @Test
+    public void test05() {
+        WinState wst = frame.turn(0, 0);
+        frame.checkWinner(wst);
+    }
+
+
+    @Test
+    public void test06() {
+        frame.turn(0, 0);
+        frame.turn(0, 1);
+        frame.turn(1, 0);
+        frame.turn(1, 1);
+        frame.turn(2, 1);
+        WinState winSt = frame.turn(1, 0);
+        frame.checkWinner(winSt);
+    }
+
+    @Test
+    public void test07() {
+        frame.settingsFrame();
+    }*/
+
+    // nicht im  Dokument
+    // New Test
+    // should fail
+
+
+    // ------------------- TESTS ENDE -------------------
 
     /*
-    1. rechts unten - /not done Christoph
+    1. rechts unten - /done Christoph
     2. gewinn über ecke - check /done (André)
     3. exp Punkte minus Punkte - check aber nochmal drueber schauen /not done (André)
     4. i und ! Sieg - Chrissy
     5. wth Test von uns der passen könnte - Chrissy
     6. 20. Zug - carina 🖐
-    7. v = Sieg - André done
-    8. unentschieden, obwohl felder frei - Christoph
-    9. backlash- formation kein Sieg, wenn es an die rechte Spalte grenzt - Christoph
+    7. v = Sieg - André /done
+    8. unentschieden, obwohl felder frei - /done Christoph
+    9. backlash- formation kein Sieg, wenn es an die rechte Spalte grenzt - /done Christoph
     10. [4][0} nicht ausgewertet = kein Sieg, wenn benutzt wird - carina 🖐
     */
 
