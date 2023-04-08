@@ -24,7 +24,7 @@ public class TeSSA_Tac_Toe_Tests {
     public void setUp() throws Exception {
         p1 = new Player("Player 1", Ressources.icon_x);
         p2 = new Player("Player 2", Ressources.icon_o);
-        board = new Board(3, 3, 3, p1, p2);
+        board = new Board(4, 4, 4, p1, p2);
         frame = new MainWindow(p1, p2, board);
         frame.setVisible(true);
         MainWindow.setDebugg(true);
@@ -118,15 +118,21 @@ public class TeSSA_Tac_Toe_Tests {
     }
 
     //failed successfully
-    @Test void testeRechterWinkel(){
-        frame.turn(0, 0);
-        frame.turn(0, 1);
-        frame.turn(1, 0);
-        frame.turn(0, 2);
-        frame.turn(1, 1);
-        assertSame(WinState.player1, WinState.player1);
+    @Test void gewinnUberEckeTest(){
+        //Arrange
+        zug(0, 0);
+        zug(0, 1);
+        zug(1, 0);
+        zug(0, 2);
+        //Act
+        zug(1, 1);
+        //Assert
+        assertSame(WinState.player1, board.checkWin());
     }
 
+    // Fehler 3
+    // Ein Test der testet ob der Spieler 1 Punkte bekommt, wenn er gewinnt
+    //
     @Test
     public void player1ExpPktBeiSieg() {
         frame.turn(0, 0);
@@ -145,6 +151,54 @@ public class TeSSA_Tac_Toe_Tests {
         assertEquals("0", frame.getPlayer1_score().getText());
     }
 
+    // Fehler 3
+    // Ein Test der testet ob der Spieler 1 Punkte bekommt, wenn er gewinnt
+    @Test
+    public void player2MinusPktBeiSieg() {
+        frame.turn(0, 0);
+        frame.turn(1, 0);
+        frame.turn(0, 1);
+        frame.turn(1, 1);
+        frame.turn(0, 2);
+        //
+        frame.turn(0, 0);
+        frame.turn(1, 0);
+        frame.turn(0, 1);
+        frame.turn(1, 1);
+        frame.turn(0, 2);
+        System.out.println(frame.getPlayer1_score().getText());
+
+        assertEquals("0", frame.getPlayer1_score().getText());
+    }
+
+    // Fehler 4.1: !
+    @Test void gewinnDreiInEinerReiheMitLeerzeichen(){
+        frame.turn(0, 0); //x
+        frame.turn(2, 0); //o
+        frame.turn(1, 0); //x
+        frame.turn(0, 1); //o
+        frame.turn(3, 0); //x
+        assertSame(WinState.player1, board.checkWin());
+    }
+
+    // Fehler 4.2: i
+    @Test void gewinnDreiInEinerReiheMitLeerzeicheni(){
+        frame.turn(0, 0); //x
+        frame.turn(1, 0); //o
+        frame.turn(2, 0); //x
+        frame.turn(0, 1); //o
+        frame.turn(3, 0); //x
+        assertSame(WinState.player1, board.checkWin());
+    }
+
+    // Fehler 5
+    @Test void vFuehrtZumSieg(){
+        zug(0, 0);
+        zug(0, 1);
+
+    }
+
+    // nicht im Dokument
     @Test
     public void testNextTurn() {
         Player p1 = new Player("Alice", Ressources.icon_x);
@@ -162,6 +216,8 @@ public class TeSSA_Tac_Toe_Tests {
         board.nextTurn();
         assertEquals(p1, board.getActivePlayer());
     }
+
+
 
     @Test
     public void testSetToken2d() {
@@ -210,6 +266,8 @@ public class TeSSA_Tac_Toe_Tests {
         board.setToken2d(2, 2, p2);
         assertEquals(WinState.player2, board.checkWin());
     }
+    
+    //nicht relevant
     @Test
     public void testMainWindowCreation() {
         Player p1 = new Player("Player 1", Ressources.icon_x);
