@@ -37,6 +37,11 @@ public class TeSSA_Tac_Toe_Tests {
         frame = null;
     }
 
+    // für page object model
+    public void zug(int reihe, int spalte){
+        frame.turn(reihe, spalte);
+    }
+
     @Test
     public void test01() throws InterruptedException {
         frame.turn(0, 0);
@@ -94,6 +99,7 @@ public class TeSSA_Tac_Toe_Tests {
         frame.settingsFrame();
     }
 
+    // nicht im  Dokument
     // New Test
     // should fail
     @Test
@@ -117,6 +123,7 @@ public class TeSSA_Tac_Toe_Tests {
         assertSame(board.checkWin(), WinState.tie);
     }
 
+    // Fehler 2
     //failed successfully
     @Test void gewinnUberEckeTest(){
         //Arrange
@@ -290,5 +297,37 @@ public class TeSSA_Tac_Toe_Tests {
         String[] args = {"1"};
         TeSSA_Tac_Toe.main(args);
     }
+
+    @Test
+    public void testEachTwentyMoves(){
+        Player p1 = new Player("Alice", Ressources.icon_x);
+        Player p2 = new Player("Bob", Ressources.icon_o);
+        Board board = new Board(3, 3, 3, p1, p2);
+
+            board.setToken2d(0, 2, p1);
+            board.setToken2d(2, 2, p2);
+            board.setToken2d(1, 1, p1);
+            board.setToken2d(0, 1, p2);
+            board.setToken2d(2, 0, p1);
+
+        //Act
+        board.setToken2d(2, 1, p1);
+
+        String retString = board.getPlayerNameInField(0, 0);
+        assertEquals(null , retString);
+    }
+
+    /*
+    1. rechts unten - /not done Christoph
+    2. gewinn über ecke - check /done
+    3. exp Punkte minus Punkte - check aber nochmal drueber schauen /not done (André)
+    4. i und ! Sieg - Chrissy
+    5. wth Test von uns der passen könnte - Chrissy
+    6. 20. Zug - carina 🖐
+    7. v = Sieg - André
+    8. unentschieden, obwohl felder frei - Christoph
+    9. backlash- formation kein Sieg, wenn es an die rechte Spalte grenzt - Christoph
+    10. [4][0} nicht ausgewertet = kein Sieg, wenn benutzt wird - carina 🖐
+    */
 }
 
