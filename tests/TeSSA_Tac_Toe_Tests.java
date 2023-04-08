@@ -170,13 +170,15 @@ public class TeSSA_Tac_Toe_Tests {
         zug(0, 1);
         zug(1, 1);
         zug(0, 2);
-        //
+        board.resetGame();
         zug(0, 0);
         zug(1, 0);
         zug(0, 1);
         zug(1, 1);
         zug(0, 2);
-        System.out.println(frame.getPlayer1_score().getText());
+        System.out.println();
+
+        System.out.println(frame.getPlayer2_score().getText());
 
         assertEquals("0", frame.getPlayer1_score().getText());
     }
@@ -329,9 +331,31 @@ public class TeSSA_Tac_Toe_Tests {
         assertEquals(null , retString);
     }
 
+    @Test
+    public void testTwentyMoves() {
+        for (int i = 0; i < 3; i++) {
+            zug(2, 1);
+            zug(0, 2);
+            zug(0, 1);
+            zug(1, 2);
+            zug(1, 1);
+            frame.resetBoard();
+        }
+        zug(2, 1);
+        zug(0, 2);
+        zug(0, 1);
+        zug(1, 2);
+        //Act
+        zug(1, 1);
+        // Assert
+        String retString = board.getPlayerNameInField(0, 0);
+        assertEquals(" ", retString);
+    }
+}
+
     /*
     1. rechts unten - /not done Christoph
-    2. gewinn über ecke - check /done
+    2. gewinn über ecke - check /done (André)
     3. exp Punkte minus Punkte - check aber nochmal drueber schauen /not done (André)
     4. i und ! Sieg - Chrissy
     5. wth Test von uns der passen könnte - Chrissy
@@ -341,5 +365,4 @@ public class TeSSA_Tac_Toe_Tests {
     9. backlash- formation kein Sieg, wenn es an die rechte Spalte grenzt - Christoph
     10. [4][0} nicht ausgewertet = kein Sieg, wenn benutzt wird - carina 🖐
     */
-}
 
