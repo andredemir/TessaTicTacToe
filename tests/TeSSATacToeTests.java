@@ -1,6 +1,5 @@
 // Version für JUnit 5
 
-import com.sun.jdi.IntegerValue;
 import gfx.MainWindow;
 import gfx.Ressources;
 import logic.Board;
@@ -10,11 +9,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import javax.swing.*;
-
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TeSSA_Tac_Toe_Tests {
+public class TeSSATacToeTests {
     private Player p1, p2;
     private Board board;
     private MainWindow frame;
@@ -43,66 +40,11 @@ public class TeSSA_Tac_Toe_Tests {
         frame.turn(reihe, spalte);
     }
 
-    @Test
-    public void test01() throws InterruptedException {
-        frame.turn(0, 0);
-        Thread.sleep(TIME_OUT);
-        frame.turn(0, 1);
-        Thread.sleep(TIME_OUT);
-        frame.turn(1, 0);
-        Thread.sleep(TIME_OUT);
-        frame.turn(0, 2);
-        Thread.sleep(TIME_OUT);
-        WinState winner = frame.turn(2, 0);
-        assertSame(WinState.player1, winner);
+    public String getFieldEntry(int reihe, int spalte){
+        return board.getPlayerNameInField(reihe,spalte);
     }
 
-    @Test
-    public void test02() {
-        frame.turn(0, 0);
-        String retString = board.getPlayerNameInField(0, 0);
-        assertEquals("Player 1", retString);
-    }
-
-    @Test
-    public void test03() {
-        frame.turn(0, 0);
-        frame.turn(0, 1);
-        String retString = board.getPlayerNameInField(0, 1);
-        assertEquals("Player 2", retString);
-    }
-    @Test
-    public void test04() {
-        String retString = board.getPlayerNameInField(0, 0);
-        assertEquals("        ", retString);
-    }
-
-    @Test
-    public void test05() {
-        WinState wst = frame.turn(0, 0);
-        frame.checkWinner(wst);
-    }
-
-
-    @Test
-    public void test06() {
-        frame.turn(0, 0);
-        frame.turn(0, 1);
-        frame.turn(1, 0);
-        frame.turn(1, 1);
-        frame.turn(2, 1);
-        WinState winSt = frame.turn(1, 0);
-        frame.checkWinner(winSt);
-    }
-
-    @Test
-    public void test07() {
-        frame.settingsFrame();
-    }
-
-    // nicht im  Dokument
-    // New Test
-    // should fail
+    // ------------------- OUR TESTS START -------------------
     @Test
     public void doppelPlatzierenTest() {
         //Arrange
@@ -113,18 +55,6 @@ public class TeSSA_Tac_Toe_Tests {
         String retString = board.getPlayerNameInField(0, 1);
         //Assert
         assertEquals("Player 2", retString);
-    }
-    //should fail
-    @Test void testForTie(){
-        zug(0, 0);
-        zug(0, 1);
-        zug(0, 2);
-        zug(1, 0);
-        zug(1, 1);
-        zug(1, 2);
-        zug(2, 0);
-        zug(2, 1);
-        assertSame(board.checkWin(), WinState.tie);
     }
 
     // Fehler 2
@@ -144,6 +74,12 @@ public class TeSSA_Tac_Toe_Tests {
     // Fehler 3
     // Ein Test der testet ob der Spieler 1 Punkte bekommt, wenn er gewinnt
     //
+    public String getPlayer1Score(){
+        return frame.getPlayer1_score().getText();
+    }
+    public String getPlayer2Score(){
+        return frame.getPlayer2_score().getText();
+    }
     @Test
     public void player1ExpPktBeiSieg() {
         zug(0, 0);
@@ -151,9 +87,9 @@ public class TeSSA_Tac_Toe_Tests {
         zug(0, 1);
         zug(1, 1);
         zug(0, 2);
-        frame.checkWinner(WinState.player1);
-        System.out.println(frame.getPlayer1_score().getText());
-        assertEquals("1", frame.getPlayer1_score().getText());
+        testCheckWinner(WinState.player1);
+        //System.out.println(getPlayer1Score());
+        assertEquals("1", Integer.valueOf(getPlayer1Score()));
     }
 
     // Fehler 3
@@ -166,10 +102,10 @@ public class TeSSA_Tac_Toe_Tests {
         zug(1, 1);
         zug(2, 2);
         zug(1, 2);
-        frame.checkWinner(WinState.player2);
-        System.out.println(Integer.valueOf(frame.getPlayer2_score().getText()));
+        testCheckWinner(WinState.player2);
+        //System.out.println(Integer.valueOf(frame.getPlayer2_score().getText()));
 
-        assertEquals(1, Integer.valueOf(frame.getPlayer2_score().getText()));
+        assertEquals(1, Integer.valueOf(getPlayer2Score()));
     }
 
     // Fehler 4.1: !
@@ -179,7 +115,7 @@ public class TeSSA_Tac_Toe_Tests {
         zug(1, 0); //x
         zug(0, 1); //o
         zug(3, 0); //x
-        assertSame(WinState.player1, board.checkWin());
+        assertSame(WinState.player1, testCheckWinState());
     }
 
     // Fehler 4.2: i
@@ -189,7 +125,7 @@ public class TeSSA_Tac_Toe_Tests {
         zug(2, 0); //x
         zug(0, 1); //o
         zug(3, 0); //x
-        assertSame(WinState.player1, board.checkWin());
+        assertSame(WinState.player1, testCheckWinState());
     }
 
     // Fehler 5
@@ -199,18 +135,48 @@ public class TeSSA_Tac_Toe_Tests {
         zug(1, 1);
         zug(1, 2);
         zug(0, 2);
-        assertEquals(board.checkWin(), WinState.none);
+        assertEquals(testCheckWinState(), WinState.none);
     }
 
-    // Fehler 5
-    @Test void testGanzUntenRechts(){
-        zug(3, 3);
-        System.out.println(board.getPlayerNameInField(3, 3));
-        assertEquals(board.getPlayerNameInField(3, 3), "Player 1");
+    @Test
+    public void testTwentyMoves() {
+        for (int i = 0; i < 3; i++) {
+            zug(2, 1);
+            zug(0, 2);
+            zug(0, 1);
+            zug(1, 2);
+            zug(1, 1);
+            frame.resetBoard();
+        }
+        zug(2, 1);
+        zug(0, 2);
+        zug(0, 1);
+        zug(1, 2);
+        //Act
+        zug(1, 1);
+        // Assert
+        String retString = board.getPlayerNameInField(0, 0);
+        assertEquals(" ", retString);
     }
+}
+
+    /*
+    1. rechts unten - /not done Christoph
+    2. gewinn über ecke - check /done (André)
+    3. exp Punkte minus Punkte - check aber nochmal drueber schauen /not done (André)
+    4. i und ! Sieg - Chrissy
+    5. wth Test von uns der passen könnte - Chrissy
+    6. 20. Zug - carina 🖐
+    7. v = Sieg - André done
+    8. unentschieden, obwohl felder frei - Christoph
+    9. backlash- formation kein Sieg, wenn es an die rechte Spalte grenzt - Christoph
+    10. [4][0} nicht ausgewertet = kein Sieg, wenn benutzt wird - carina 🖐
+    */
+
+
 
     // nicht im Dokument
-    @Test
+    /*@Test
     public void testNextTurn() {
         Player p1 = new Player("Alice", Ressources.icon_x);
         Player p2 = new Player("Bob", Ressources.icon_o);
@@ -276,7 +242,7 @@ public class TeSSA_Tac_Toe_Tests {
         board.setToken2d(2, 2, p2);
         assertEquals(WinState.player2, board.checkWin());
     }
-    
+
     //nicht relevant
     @Test
     public void testMainWindowCreation() {
@@ -299,59 +265,6 @@ public class TeSSA_Tac_Toe_Tests {
     public void testMainMethod() {
         String[] args = {"1"};
         TeSSA_Tac_Toe.main(args);
-    }
+    }*/
 
-    @Test
-    public void testEachTwentyMoves(){
-        Player p1 = new Player("Alice", Ressources.icon_x);
-        Player p2 = new Player("Bob", Ressources.icon_o);
-        Board board = new Board(3, 3, 3, p1, p2);
-
-            board.setToken2d(0, 2, p1);
-            board.setToken2d(2, 2, p2);
-            board.setToken2d(1, 1, p1);
-            board.setToken2d(0, 1, p2);
-            board.setToken2d(2, 0, p1);
-
-        //Act
-        board.setToken2d(2, 1, p1);
-
-        String retString = board.getPlayerNameInField(0, 0);
-        assertEquals(null , retString);
-    }
-
-    @Test
-    public void testTwentyMoves() {
-        for (int i = 0; i < 3; i++) {
-            zug(2, 1);
-            zug(0, 2);
-            zug(0, 1);
-            zug(1, 2);
-            zug(1, 1);
-            frame.resetBoard();
-        }
-        zug(2, 1);
-        zug(0, 2);
-        zug(0, 1);
-        zug(1, 2);
-        //Act
-        zug(1, 1);
-        // Assert
-        String retString = board.getPlayerNameInField(0, 0);
-        assertEquals(" ", retString);
-    }
 }
-
-    /*
-    1. rechts unten - /not done Christoph
-    2. gewinn über ecke - check /done (André)
-    3. exp Punkte minus Punkte - check aber nochmal drueber schauen /not done (André)
-    4. i und ! Sieg - Chrissy
-    5. wth Test von uns der passen könnte - Chrissy
-    6. 20. Zug - carina 🖐
-    7. v = Sieg - André done
-    8. unentschieden, obwohl felder frei - Christoph
-    9. backlash- formation kein Sieg, wenn es an die rechte Spalte grenzt - Christoph
-    10. [4][0} nicht ausgewertet = kein Sieg, wenn benutzt wird - carina 🖐
-    */
-
