@@ -145,17 +145,17 @@ public class TeSSA_Tac_Toe_Tests {
     //
     @Test
     public void player1ExpPktBeiSieg() {
-        frame.turn(0, 0);
-        frame.turn(1, 0);
-        frame.turn(0, 1);
-        frame.turn(1, 1);
-        frame.turn(0, 2);
+        zug(0, 0);
+        zug(1, 0);
+        zug(0, 1);
+        zug(1, 1);
+        zug(0, 2);
         //
-        frame.turn(0, 0);
-        frame.turn(1, 0);
-        frame.turn(0, 1);
-        frame.turn(1, 1);
-        frame.turn(0, 2);
+        zug(0, 0);
+        zug(1, 0);
+        zug(0, 1);
+        zug(1, 1);
+        zug(0, 2);
         System.out.println(frame.getPlayer1_score().getText());
 
         assertEquals("0", frame.getPlayer1_score().getText());
@@ -165,17 +165,17 @@ public class TeSSA_Tac_Toe_Tests {
     // Ein Test der testet ob der Spieler 1 Punkte bekommt, wenn er gewinnt
     @Test
     public void player2MinusPktBeiSieg() {
-        frame.turn(0, 0);
-        frame.turn(1, 0);
-        frame.turn(0, 1);
-        frame.turn(1, 1);
-        frame.turn(0, 2);
+        zug(0, 0);
+        zug(1, 0);
+        zug(0, 1);
+        zug(1, 1);
+        zug(0, 2);
         //
-        frame.turn(0, 0);
-        frame.turn(1, 0);
-        frame.turn(0, 1);
-        frame.turn(1, 1);
-        frame.turn(0, 2);
+        zug(0, 0);
+        zug(1, 0);
+        zug(0, 1);
+        zug(1, 1);
+        zug(0, 2);
         System.out.println(frame.getPlayer1_score().getText());
 
         assertEquals("0", frame.getPlayer1_score().getText());
@@ -183,21 +183,21 @@ public class TeSSA_Tac_Toe_Tests {
 
     // Fehler 4.1: !
     @Test void gewinnDreiInEinerReiheMitLeerzeichen(){
-        frame.turn(0, 0); //x
-        frame.turn(2, 0); //o
-        frame.turn(1, 0); //x
-        frame.turn(0, 1); //o
-        frame.turn(3, 0); //x
+        zug(0, 0); //x
+        zug(2, 0); //o
+        zug(1, 0); //x
+        zug(0, 1); //o
+        zug(3, 0); //x
         assertSame(WinState.player1, board.checkWin());
     }
 
     // Fehler 4.2: i
     @Test void gewinnDreiInEinerReiheMitLeerzeicheni(){
-        frame.turn(0, 0); //x
-        frame.turn(1, 0); //o
-        frame.turn(2, 0); //x
-        frame.turn(0, 1); //o
-        frame.turn(3, 0); //x
+        zug(0, 0); //x
+        zug(1, 0); //o
+        zug(2, 0); //x
+        zug(0, 1); //o
+        zug(3, 0); //x
         assertSame(WinState.player1, board.checkWin());
     }
 
@@ -205,7 +205,10 @@ public class TeSSA_Tac_Toe_Tests {
     @Test void vFuehrtZumSieg(){
         zug(0, 0);
         zug(0, 1);
-
+        zug(1, 1);
+        zug(1, 2);
+        zug(0, 2);
+        assertEquals(board.checkWin(), WinState.none);
     }
 
     // nicht im Dokument
