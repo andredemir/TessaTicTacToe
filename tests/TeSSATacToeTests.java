@@ -22,7 +22,7 @@ public class TeSSATacToeTests {
     public void setUp() throws Exception {
         p1 = new Player("Player 1", Ressources.icon_x);
         p2 = new Player("Player 2", Ressources.icon_o);
-        board = new Board(4, 4, 4, p1, p2);
+        board = new Board(4, 4, 3, p1, p2);
         frame = new MainWindow(p1, p2, board);
         frame.setVisible(true);
         MainWindow.setDebugg(true);
@@ -36,19 +36,20 @@ public class TeSSATacToeTests {
     }
 
     // Hilfsmethoden für page object model
-    public void zug(int reihe, int spalte){
+    public void zug(int reihe, int spalte) {
         frame.turn(reihe, spalte);
     }
-    public WinState testCheckWinState(){
+
+    public WinState testCheckWinState() {
         return board.checkWin();
     }
 
-    public void testCheckWinner(WinState wst){
+    public void testCheckWinner(WinState wst) {
         frame.checkWinner(wst);
     }
 
-    public String getFieldEntry(int reihe, int spalte){
-        return board.getPlayerNameInField(reihe,spalte);
+    public String getFieldEntry(int reihe, int spalte) {
+        return board.getPlayerNameInField(reihe, spalte);
     }
 
     // ------------------- OUR TESTS START -------------------
@@ -66,7 +67,8 @@ public class TeSSATacToeTests {
 
     // Fehler 2
     //failed successfully
-    @Test void gewinnUberEckeTest(){
+    @Test
+    void gewinnUberEckeTest() {
         //Arrange
         zug(0, 0);
         zug(0, 1);
@@ -75,18 +77,20 @@ public class TeSSATacToeTests {
         //Act
         zug(1, 1);
         //Assert
-        assertSame(WinState.player1, testCheckWinState());
+        assertSame(WinState.none, testCheckWinState());
     }
 
     // Fehler 3
     // Ein Test der testet ob der Spieler 1 Punkte bekommt, wenn er gewinnt
     //
-    public String getPlayer1Score(){
+    public String getPlayer1Score() {
         return frame.getPlayer1_score().getText();
     }
-    public String getPlayer2Score(){
+
+    public String getPlayer2Score() {
         return frame.getPlayer2_score().getText();
     }
+
     @Test
     public void player1ExpPktBeiSieg() {
         zug(0, 0);
@@ -116,27 +120,30 @@ public class TeSSATacToeTests {
     }
 
     // Fehler 4.1: !
-    @Test void gewinnDreiInEinerReiheMitLeerzeichen(){
+    @Test
+    void gewinnDreiInEinerReiheMitLeerzeichen() {
         zug(0, 0); //x
         zug(2, 0); //o
         zug(1, 0); //x
         zug(0, 1); //o
         zug(3, 0); //x
-        assertSame(WinState.player1, testCheckWinState());
+        assertSame(WinState.none, testCheckWinState());
     }
 
     // Fehler 4.2: i
-    @Test void gewinnDreiInEinerReiheMitLeerzeicheni(){
+    @Test
+    void gewinnDreiInEinerReiheMitLeerzeicheni() {
         zug(0, 0); //x
         zug(1, 0); //o
         zug(2, 0); //x
         zug(0, 1); //o
         zug(3, 0); //x
-        assertSame(WinState.player1, testCheckWinState());
+        assertSame(WinState.none, testCheckWinState());
     }
 
     // Fehler 5
-    @Test void vFuehrtZumSieg(){
+    @Test
+    void vFuehrtZumSieg() {
         zug(0, 0);
         zug(0, 1);
         zug(1, 1);
@@ -160,66 +167,68 @@ public class TeSSATacToeTests {
     }
 
     @Test
-    public void testFieldDownRight(){
+    public void testFieldDownRight() {
         //Arrange
 
         //Act
-        zug(3,3);
+        zug(3, 3);
         //Assert
-        String actualResult = getFieldEntry(3,3);
+        String actualResult = getFieldEntry(3, 3);
         assertEquals("Player 1", actualResult);
     }
+
     @Test
-    public void testTie(){
+    public void testTie() {
         //Arrange
         //Reihe 0
-        zug(0,1);//x
-        zug(0,0);//o
-        zug(0,2);//x
+        zug(0, 1);//x
+        zug(0, 0);//o
+        zug(0, 2);//x
         //Reihe 1
-        zug(1,1);//o
-        zug(1,0);//x
-        zug(1,2);//o
+        zug(1, 1);//o
+        zug(1, 0);//x
+        zug(1, 2);//o
         //Reihe 2
-        zug(2,1);//x
-        zug(2,0);//o
-        zug(2,2);//x
+        zug(2, 1);//x
+        zug(2, 0);//o
+        zug(2, 2);//x
         //Reihe 3
-        zug(3,1);//o
-        zug(3,0);//x
+        zug(3, 1);//o
+        zug(3, 0);//x
         //Act
-        zug(3,2);//o
+        zug(3, 2);//o
         //Assert
 
-        assertEquals(WinState.none,testCheckWinState());
+        assertEquals(WinState.none, testCheckWinState());
         //actual result
         //assertEquals(WinState.tie, board.checkWin());
     }
 
 
     @Test
-    public void testBackslashDiagonalWinOnRightBorder() {
+    public void testSlashDiagonalWinOnRightBorder() {
         //Arrange
-        zug(0, 1);//x
+        zug(2, 1);//x
         zug(0, 0);//o
         zug(1, 2);//x
         zug(1, 0);//o
         //Act
-        zug(2, 3);//x
+        zug(0, 3);//x
         //Assert
         assertEquals(WinState.player1, testCheckWinState());
         //actual result
         //assertEquals(WinState.none, board.checkWin());
     }
-    
+
     @Test
-    public void testFourZero(){
+    public void testFourZero() {
         p1 = new Player("Player 1", Ressources.icon_x);
         p2 = new Player("Player 2", Ressources.icon_o);
         board = new Board(3, 5, 3, p1, p2);
         frame = new MainWindow(p1, p2, board);
 
         frame.turn(0, 4);
+
         frame.turn(1, 0);
 
         frame.turn(1, 3);
@@ -231,10 +240,42 @@ public class TeSSATacToeTests {
         assertSame(WinState.player1, board.checkWin());
     }
 
+    //könnte Fehler 5 sein von den gegeben Tests
+    @Test
+    public void tessaBlueFunktioniertNicht() {
+        //Arrange
+        p1 = new Player("Player 1", Ressources.icon_tessa_blue);
+        //Assert
+        assertSame(p1.getIcon(), MainWindow.class.getResource("/res/tessa_b.png"));
+    }
+
+    //könnte Fehler 5 sein von den gegeben Tests
+    @Test
+    public void gleicheSymbole() {
+        //Arrange
+        p1 = new Player("Player 1", Ressources.icon_o);
+        p2 = new Player("Player 2", Ressources.icon_o);
+        //Assert
+        assertFalse(p1.getIcon().equals(p2.getIcon()));
+    }
+
+    //könnte Fehler 5 sein von den gegeben Tests
+    //ToDo: einmal besprechen
+    @Test
+    public void bleibtTessaBlue() {
+        //Arrange
+        p2 = new Player("Player 2", Ressources.icon_o);
+        //Act
+        p2.setIcon(Ressources.icon_tessa_blue);
+        p2.setIcon(Ressources.icon_o); //Assert
+        assertSame(p2.getIconString(), "O");
+        assertSame(p2.getIcon(), MainWindow.class.getResource("/res/o.png"));
+    }
+
     // ------------------- OUR TESTS END -------------------
 
     //------------------- TESTS ANFANG -------------------
-/*    @Test
+    @Test
     public void test01() throws InterruptedException {
         frame.turn(0, 0);
         Thread.sleep(TIME_OUT);
@@ -262,6 +303,7 @@ public class TeSSATacToeTests {
         String retString = board.getPlayerNameInField(0, 1);
         assertEquals("Player 2", retString);
     }
+
     @Test
     public void test04() {
         String retString = board.getPlayerNameInField(0, 0);
@@ -289,7 +331,7 @@ public class TeSSATacToeTests {
     @Test
     public void test07() {
         frame.settingsFrame();
-    }*/
+    }
 
     // nicht im  Dokument
     // New Test
@@ -312,9 +354,8 @@ public class TeSSATacToeTests {
     */
 
 
-
     // nicht im Dokument
-    /*@Test
+    @Test
     public void testNextTurn() {
         Player p1 = new Player("Alice", Ressources.icon_x);
         Player p2 = new Player("Bob", Ressources.icon_o);
@@ -381,6 +422,7 @@ public class TeSSATacToeTests {
         assertEquals(WinState.player2, board.checkWin());
     }
 
+
     //nicht relevant
     @Test
     public void testMainWindowCreation() {
@@ -403,6 +445,5 @@ public class TeSSATacToeTests {
     public void testMainMethod() {
         String[] args = {"1"};
         TeSSA_Tac_Toe.main(args);
-    }*/
-
+    }
 }
