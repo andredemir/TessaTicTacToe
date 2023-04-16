@@ -100,7 +100,7 @@ public class TeSSATacToeTests {
         zug(0, 2);
         testCheckWinner(WinState.player1);
         //System.out.println(getPlayer1Score());
-        assertEquals("1", Integer.valueOf(getPlayer1Score()));
+        assertEquals(1, Integer.valueOf(getPlayer1Score()));
     }
 
     // Fehler 3

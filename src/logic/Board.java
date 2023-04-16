@@ -89,9 +89,11 @@ public class Board {
         active = player1;
         board = new int[m][n];
     }
-
+    //:TODO: check if the field is already taken
     public void setToken2d(int m, int n, Player p) {
-        board[m][n] = (player1 == p) ? 1 : 2;
+        if (board[m][n] == 0) {
+            board[m][n] = (player1 == p) ? 1 : 2;
+        }
     }
 
     public WinState checkWin() {

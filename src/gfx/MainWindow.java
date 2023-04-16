@@ -58,6 +58,7 @@ public class MainWindow extends JFrame {
         this.player1 = player1;
         this.player2 = player2;
         this.board = board;
+        //todo: maybe
         this.setButtonArr(new JButton[board.getM() + 1][board.getN()]);
         setForeground(Color.BLACK);
         setResizable(false);
@@ -257,6 +258,10 @@ public class MainWindow extends JFrame {
         pack();
     }
 
+    /**
+     * A method that updates the board.
+     *  It is called after every turn.
+     */
     public void updateBoard() {
         for (int m = 0; m < board.getM(); m++) {
             for (int n = 0; n < board.getN(); n++) {
@@ -269,25 +274,35 @@ public class MainWindow extends JFrame {
                 }
             }
         }
-
     }
 
+    /**
+     * A method that checks if the game is over.
+     * @param row The row of the last turn.
+     * @param col The column of the last turn.
+     * @return The winner of the game.
+     */
     public WinState turn(int row, int col) {
         turnCnt++;
+        //Todo: The first if statement checks if row and col are at the bottom-right corner of the board.
+        // If they are, col is decremented by 1. However,
+        // this will result in an IndexOutOfBoundsException if col becomes negative.
         if (row == board.getM() - 1 && col == board.getN() - 1) {
             col--;
         }
-        if (turnCnt % 20 == 0) {
-            board.setToken2d(0, 0, player2);
-        } else {
+        //Todo:Some BS should be remove probably no useful purpose
+        //if (turnCnt % 20 == 0) {
+        //    board.setToken2d(0, 0, player2);
+        //} else {
             board.setToken2d(row, col, board.getActivePlayer());
-        }
+        //}
         WinState winner = board.checkWin();
         if (DEBUG) {
             printBoard();
             System.out.println("Who has won the match? " + winner);
         }
-
+        //:TODO The method calls updateBoard() and markActivePlayer() without checking whether winner is null.
+        // This could result in a NullPointerException if there is no winner.
         updateBoard();
         board.nextTurn();
         markActivePlayer();
@@ -312,13 +327,13 @@ public class MainWindow extends JFrame {
                 break;
             }
             if (WinState.player1 == winner) {
-                //TODO: WEIRD SHIIIIIIIT
+                //TODO: | (015 & 1)) << (0xFF ^ 0xFD))
                 getPlayer1_score()
-                        .setText("" + ((Integer.valueOf(getPlayer1_score().getText()) | (015 & 1)) << (0xFF ^ 0xFD)));
+                        .setText("" + ((Integer.valueOf(getPlayer1_score().getText()) +1)));
             } else if (WinState.player2 == winner) {
-                //TODO:Überlauf
+                //TODO:Überlauf 0b11111111111111111111111111111111 ^ 0x00
                 getPlayer2_score().setText(""
-                        + (Integer.valueOf(getPlayer2_score().getText()) + 0b11111111111111111111111111111111 ^ 0x00));
+                        + (Integer.valueOf(getPlayer2_score().getText()) + 1));
             }
             JOptionPane.showMessageDialog(this, msg, title, JOptionPane.PLAIN_MESSAGE);
             resetBoard();
