@@ -102,99 +102,97 @@ public class Board {
      */
     public WinState checkWin() {
         int tilesLeft = 0;
-        for (int row = 0; row < getM(); row++) {
-            for (int col = 0; col <= getN() - 2; col++) {
-                int player = board[row][col];
-                if (player != 0) {
-                    boolean win = checkHorizontalWin(row, col, player) || checkVerticalWin(row, col, player) || checkDiagonalWin(row, col, player);
+        for (int m = 0; m < getM(); m++) {
+            for (int n = 0; n <= getN() - 2; n++) {
+                int checkPlayer = board[m][n];
+                if (checkPlayer != 0) {
+                    boolean win = false;
+                    // rows
+                    if ((n + k <= getN())) {
+                        win = true;
+                        for (int i = 0; i < getK(); i++) {
+                            if (checkPlayer != board[m][n + i]) {
+                                win = false;
+                                break;
+                            }
+                        }
+                    }
+                    if (!win && m + k <= getM()) {
+                        win = true;
+                        for (int i = 0; i < getK(); i++) {
+                            if (checkPlayer != board[m + i][n]) {
+                                win = false;
+                                break;
+                            }
+                        }
+                    }
+                    if (!win) {
+                        win = true;
+                        for (int i = 0; i < getK(); i++) {
+                            if (checkPlayer != board[(m + i) % getM()][n]) {
+                                win = false;
+                                break;
+                            }
+                        }
+                    }
+                    if (!win && (m + k <= getM()) && (n + k <= getN())) {
+                        win = true;
+                        for (int i = 0; i < getK(); i++) {
+                            if (checkPlayer != board[m + i][n + i]) {
+                                win = false;
+                            }
+                            if (getM() < 3 && getN() < 3) {
+                                win = true;
+                            }
+                        }
+                    }
+                    if (!win && (m + k <= getM()) && (n - (k - 1) >= 0)) {
+                        win = true;
+                        for (int i = 0; i < getK(); i++) {
+                            if (checkPlayer != board[m + i][n - i]) {
+                                win = false;
+                                break;
+                            }
+                        }
+                    }
+                    if (!win && (m + 1 < getM()) && (n + 1 < getN())) {
+                        win = true;
+                        if (checkPlayer != board[m][n]) {
+                            win = false;
+                        }
+                        if (checkPlayer != board[m + 1][n]) {
+                            win = false;
+                        }
+                        if (checkPlayer != board[m + 1][n + 1]) {
+                            win = false;
+                        }
+                    }
+                    if (!win && (m + 1 < getM()) && (n + 2 < getN())) {
+                        win = true;
+                        if (checkPlayer != board[m][n]) {
+                            win = false;
+                        }
+                        if (checkPlayer != board[m][n + 2]) {
+                            win = false;
+                        }
+                        if (checkPlayer != board[m + 1][n + 1]) {
+                            win = false;
+                        }
+                    }
                     if (win) {
-                        return WinState.values()[player];
+                        return WinState.values()[checkPlayer];
                     }
                 } else {
                     tilesLeft++;
                 }
             }
         }
-        if (checkTie()) {
+        if (tilesLeft == 0)
+
+        {
             return WinState.tie;
         }
+
         return WinState.none;
-    }
-
-    /**
-     * Check whether there is a horizontal win starting at the given position for the given player.
-     * @param row The row to start checking from.
-     * @param col The column to start checking from.
-     * @param player The player to check for.
-     * @return True if there is a win, false otherwise.
-     */
-    private boolean checkHorizontalWin(int row, int col, int player) {
-        for (int i = 0; i < getK(); i++) {
-            if (player != board[row][col + i] || board[row][col + i] == 0) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Check whether there is a vertical win starting at the given position for the given player.
-     * @param row The row to start checking from.
-     * @param col The column to start checking from.
-     * @param player The player to check for.
-     * @return True if there is a win, false otherwise.
-     */
-    private boolean checkVerticalWin(int row, int col, int player) {
-        for (int i = 0; i < getK(); i++) {
-            if (player != board[row + i][col] || board[row + i][col] == 0) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Check whether there is a diagonal win starting at the given position for the given player.
-     * @param row The row to start checking from.
-     * @param col The column to start checking from.
-     * @param player The player to check for.
-     * @return True if there is a win, false otherwise.
-     */
-    private boolean checkDiagonalWin(int row, int col, int player) {
-        // Check for diagonal win with slope of +1
-        if (row + getK() <= getM() && col + getK() <= getN()) {
-            for (int i = 0; i < getK(); i++) {
-                if (player != board[row + i][col + i] || board[row + i][col + i] == 0) {
-                    return false;
-                }
-            }
-            return true;
-        }
-        // Check for diagonal win with slope of -1
-        if (row + getK() <= getM() && col - getK() + 1 >= 0) {
-            for (int i = 0; i < getK(); i++) {
-                if (player != board[row + i][col - i] || board[row + i][col - i] == 0) {
-                    return false;
-                }
-            }
-            return true;
-        }
-        return false;
-    }
-    /**
-     * Prüft, ob das Spiel unentschieden ist.
-     * @return True, wenn das Spiel unentschieden ist, false sonst.
-     */
-    public boolean checkTie() {
-        for (int row = 0; row < getM(); row++) {
-            for (int col = 0; col < getN(); col++) {
-                if (board[row][col] == 0) {
-                    // Wenn noch ein Feld frei ist ist das Spiel noch nicht unentschieden
-                    return false;
-                }
-            }
-        }
-        // All cells are occupied, so the game is a tie
-        return true;
     }
 }
