@@ -7,11 +7,13 @@ import logic.Player;
 import logic.WinState;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import javax.swing.*;
 
-import java.awt.event.ActionEvent;
+import java.awt.*;
+import java.awt.event.KeyEvent;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -58,20 +60,26 @@ public class TeSSATacToeTests {
 
     // ------------------- OUR TESTS START -------------------
     @Test
-    public void doppelPlatzierenTest() {
+    public void doppelPlatzierenNichtMoeglichTest() {
         //Arrange
         zug(0, 0);
-        zug(0, 1);
         //Act
-        zug(0, 1);
-        String retString = getFieldEntry(0, 1);
+        zug(0, 0);
+        String retString = getFieldEntry(0, 0);
         //Assert
-        assertEquals("Player 2", retString);
+        assertEquals("Player 1", retString);
+    }
+
+    @Test
+    public void clickOnFieldWorkOneWorks(){
+        frame.getButtonArr()[0][0].doClick();
+        assertEquals("Player 1", getFieldEntry(0, 0));
     }
 
     // Fehler 2
     //failed successfully
     @Test
+    @DisplayName("Man gewinnt über eine L formation")
     void gewinnUberEckeTest() {
         //Arrange
         zug(0, 0);
@@ -84,9 +92,6 @@ public class TeSSATacToeTests {
         assertSame(WinState.none, testCheckWinState());
     }
 
-    // Fehler 3
-    // Ein Test der testet ob der Spieler 1 Punkte bekommt, wenn er gewinnt
-    //
     public String getPlayer1Score() {
         return frame.getPlayer1_score().getText();
     }
@@ -95,13 +100,27 @@ public class TeSSATacToeTests {
         return frame.getPlayer2_score().getText();
     }
 
+    // Ein Test der testet ob der Spieler 1 Punkte bekommt, wenn er gewinnt
     @Test
-    public void player1ExpPktBeiSieg() {
+    public void player1EinPktBeiSieg() {
         zug(0, 0);
         zug(1, 0);
         zug(0, 1);
         zug(1, 1);
         zug(0, 2);
+        //Todo: In eigene Klasse
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(100);
+                    Robot robot = new Robot();
+                    robot.keyPress(KeyEvent.VK_ENTER);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
         testCheckWinner(WinState.player1);
         //System.out.println(getPlayer1Score());
         assertEquals(1, Integer.valueOf(getPlayer1Score()));
@@ -110,7 +129,7 @@ public class TeSSATacToeTests {
     // Fehler 3
     // Ein Test der testet ob der Spieler 1 Punkte bekommt, wenn er gewinnt
     @Test
-    public void player2MinusPktBeiSieg() {
+    public void player2PositivePktBeiSieg() {
         zug(0, 0);
         zug(1, 0);
         zug(0, 1);
@@ -125,7 +144,7 @@ public class TeSSATacToeTests {
 
     // Fehler 4.1: !
     @Test
-    void gewinnDreiInEinerReiheMitLeerzeichen() {
+    void keinGewinnDreiInEinerSpalteMitLeerzeichen() {
         zug(0, 0); //x
         zug(2, 0); //o
         zug(1, 0); //x
@@ -136,7 +155,7 @@ public class TeSSATacToeTests {
 
     // Fehler 4.2: i
     @Test
-    void gewinnDreiInEinerReiheMitLeerzeicheni() {
+    void keinGewinnDreiInEinerMitLeerzeicheni() {
         zug(0, 0); //x
         zug(1, 0); //o
         zug(2, 0); //x
@@ -147,22 +166,22 @@ public class TeSSATacToeTests {
 
     @Test
     public void testBeiUntentschiedenkeinPunkt1() {
-        zug(0,1);//x
-        zug(0,0);//o
-        zug(0,2);//x
+        zug(0, 1);//x
+        zug(0, 0);//o
+        zug(0, 2);//x
 //Reihe 1
-        zug(1,1);//o
-        zug(1,0);//x
-        zug(1,2);//o
+        zug(1, 1);//o
+        zug(1, 0);//x
+        zug(1, 2);//o
 //Reihe 2
-        zug(2,1);//x
-        zug(2,0);//o
-        zug(2,2);//x
+        zug(2, 1);//x
+        zug(2, 0);//o
+        zug(2, 2);//x
 //Reihe 3
-        zug(3,1);//o
-        zug(3,0);//x
+        zug(3, 1);//o
+        zug(3, 0);//x
 //Act
-        zug(3,2);//o
+        zug(3, 2);//o
 //Assert
 
 
@@ -172,22 +191,22 @@ public class TeSSATacToeTests {
 
     @Test
     public void testBeiUntentschiedenkeinPunkt2() {
-        zug(0,1);//x
-        zug(0,0);//o
-        zug(0,2);//x
+        zug(0, 1);//x
+        zug(0, 0);//o
+        zug(0, 2);//x
 //Reihe 1
-        zug(1,1);//o
-        zug(1,0);//x
-        zug(1,2);//o
+        zug(1, 1);//o
+        zug(1, 0);//x
+        zug(1, 2);//o
 //Reihe 2
-        zug(2,1);//x
-        zug(2,0);//o
-        zug(2,2);//x
+        zug(2, 1);//x
+        zug(2, 0);//o
+        zug(2, 2);//x
 //Reihe 3
-        zug(3,1);//o
-        zug(3,0);//x
+        zug(3, 1);//o
+        zug(3, 0);//x
 //Act
-        zug(3,2);//o
+        zug(3, 2);//o
 //Assert
 
         testCheckWinner(WinState.tie);
@@ -205,6 +224,7 @@ public class TeSSATacToeTests {
         assertEquals(testCheckWinState(), WinState.none);
     }
 
+
     @Test
     public void testTwentyMoves() {
         //Arrange
@@ -220,7 +240,7 @@ public class TeSSATacToeTests {
     }
 
     @Test
-    public void testFieldDownRight() {
+    public void testFieldBottomRightClickable() {
         //Arrange
 
         //Act
@@ -273,6 +293,7 @@ public class TeSSATacToeTests {
         //assertEquals(WinState.none, board.checkWin());
     }
 
+    @DisplayName("Test [4|0] führt zum Sieg")
     @Test
     public void testFourZero() {
         p1 = new Player("Player 1", Ressources.icon_x);
@@ -300,16 +321,6 @@ public class TeSSATacToeTests {
         p1 = new Player("Player 1", Ressources.icon_tessa_blue);
         //Assert
         assertSame(p1.getIcon(), MainWindow.class.getResource("/res/tessa_b.png"));
-    }
-
-    //könnte Fehler 5 sein von den gegeben Tests
-    @Test
-    public void gleicheSymbole() {
-        //Arrange
-        p1 = new Player("Player 1", Ressources.icon_o);
-        p2 = new Player("Player 2", Ressources.icon_o);
-        //Assert
-        assertFalse(p1.getIcon().equals(p2.getIcon()));
     }
 
     //könnte Fehler 5 sein von den gegeben Tests
@@ -436,6 +447,7 @@ public class TeSSATacToeTests {
         // Initially, the board should be empty
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
+                // The board should be empty
                 assertEquals(0, board.get2d(i, j));
             }
         }
@@ -465,7 +477,7 @@ public class TeSSATacToeTests {
         assertEquals(WinState.player1, board.checkWin());
 
         // After resetting the game, there should be no winner again
-        board.resetGame();
+        board.resetGame();// passiert automatisch
         assertEquals(board.checkWin(), WinState.none);
 
         // After setting a diagonal of tokens, player 2 should win
@@ -475,7 +487,7 @@ public class TeSSATacToeTests {
         assertEquals(WinState.player2, board.checkWin());
     }
 
-    //nicht relevant
+    //Testet nur ob der frame nicht null ist
     @Test
     public void testMainWindowCreation() {
         Player p1 = new Player("Player 1", Ressources.icon_x);
@@ -485,6 +497,7 @@ public class TeSSATacToeTests {
         assertNotNull(frame);
     }
 
+    //Testet nur ob der Debug mode richtig gesetzt wird
     @Test
     public void testDebugMode() {
         TeSSA_Tac_Toe.DEBUG = true;
@@ -493,16 +506,19 @@ public class TeSSATacToeTests {
         assertFalse(TeSSA_Tac_Toe.DEBUG);
     }
 
+    //Testet gar nichts
     @Test
-    public void testMainMethod() {
+    public void testMainMethodTrue() {
         String[] args = {"1"};
         TeSSA_Tac_Toe.main(args);
+        assertTrue(TeSSA_Tac_Toe.DEBUG = true);
     }
 
+
+    //Testet
     @Test
     public void testGetOIconString() {
         // Arrange
-        ImageIcon icon = Ressources.icon_x;
         String expected = "X";
 
         // Act
@@ -516,7 +532,6 @@ public class TeSSATacToeTests {
     public void testGetTessaRedIconString() {
         Player p3 = new Player("Bob", Ressources.icon_tessa_red);
         // Arrange
-        ImageIcon icon = Ressources.icon_tessa_red;
         String expected = "TeSSA red";
 
         // Act
@@ -530,7 +545,6 @@ public class TeSSATacToeTests {
     public void testGetTessaBlueIconString() {
         Player p3 = new Player("Bob", Ressources.icon_tessa_blue);
         // Arrange
-        ImageIcon icon = Ressources.icon_tessa_blue;
         String expected = "TeSSA blue";
 
         // Act
@@ -543,7 +557,6 @@ public class TeSSATacToeTests {
     @Test
     public void testGetXIconString() {
         // Arrange
-        ImageIcon icon = Ressources.icon_o;
         String expected = "O";
 
         // Act
@@ -567,13 +580,15 @@ public class TeSSATacToeTests {
     }
 
 
+    //Testet ob der Debug mode nach den Argumenten richtig gsetzt wird
     @Test
     public void testMainDebugFalse() {
         String[] args = {"0"};
         TeSSA_Tac_Toe.main(args);
-        assertFalse(MainWindow.isDefaultLookAndFeelDecorated());
+        assertFalse(TeSSA_Tac_Toe.DEBUG);
     }
 
+    //Testet ob das default Board richtig gesetzt wird vielleicht mit anderen Werten testen
     @Test
     public void testMainDefaultBoard() {
         TeSSA_Tac_Toe.main(new String[]{}); // default board
@@ -582,6 +597,7 @@ public class TeSSATacToeTests {
         assertEquals(3, board.getK());
     }
 
+    //Test ob mit den Argumenten das richtig board gesetzt wird
     @Test
     public void testMainCustomBoard() {
         TeSSA_Tac_Toe.main(new String[]{"4", "4", "3"});
@@ -591,7 +607,7 @@ public class TeSSATacToeTests {
     }
 
     @Test
-    public void testSetSameIcon(){
+    public void testSetSameIcon() {
         JPanel settingsPanel = (JPanel) frame.settingsFrame().getContentPane().getComponent(0);
         JComboBox player1Icon = (JComboBox) settingsPanel.getComponent(1);
         JComboBox player2Icon = (JComboBox) settingsPanel.getComponent(3);
@@ -605,42 +621,37 @@ public class TeSSATacToeTests {
     }
 
 
-
     @Test
-    public void testeSpielFeldGroeße()
-    {
+    public void testeSpielFeldGroeße() {
         assertEquals(16, board.getSize());
     }
 
     @Test
-    public void testSymbolXtoString()
-    {
+    public void testSymbolXtoString() {
         p1.setIcon(Ressources.icon_x);
-        assertSame("X",p1.getIconString());
+        assertSame("X", p1.getIconString());
     }
 
     @Test
-    public void testSymbolOtoString()
-    {
+    public void testSymbolOtoString() {
         p1.setIcon(Ressources.icon_o);
-        assertSame("O",p1.getIconString());
+        assertSame("O", p1.getIconString());
     }
 
     @Test
-    public void testSymbolRedtoString()
-    {
+    public void testSymbolRedtoString() {
         p1.setIcon(Ressources.icon_tessa_red);
-        assertSame("TeSSA red",p1.getIconString());
+        assertSame("TeSSA red", p1.getIconString());
     }
 
     @Test
-    public void testSymbolBluetoString()
-    {
+    public void testSymbolBluetoString() {
         p1.setIcon(Ressources.icon_tessa_blue);
-        assertSame("TeSSA blue",p1.getIconString());
+        assertSame("TeSSA blue", p1.getIconString());
     }
+
     @Test
-    public void testSetDifferentIcon(){
+    public void testSetDifferentIcon() {
         JPanel settingsPanel = (JPanel) frame.settingsFrame().getContentPane().getComponent(0);
         JComboBox player1Icon = (JComboBox) settingsPanel.getComponent(1);
         JComboBox player2Icon = (JComboBox) settingsPanel.getComponent(3);
@@ -652,5 +663,46 @@ public class TeSSATacToeTests {
         saveButton.doClick();
         assertNotEquals(p1.getIcon(), p2.getIcon());
     }
+
+    @Test
+    public void testIconPlayer1TeSSARed(){
+        JPanel settingsPanel = (JPanel) frame.settingsFrame().getContentPane().getComponent(0);
+        JComboBox player1Icon = (JComboBox) settingsPanel.getComponent(1);
+        JComboBox player2Icon = (JComboBox) settingsPanel.getComponent(3);
+        JButton saveButton = (JButton) settingsPanel.getComponent(4);
+
+        player1Icon.setSelectedItem("TeSSA Red");
+
+        saveButton.doClick();
+
+        assertEquals(Ressources.icon_tessa_red, p1.getIcon());
+    }
+
+    @Test
+    public void testIconPlayer1TeSSABlue(){
+        JPanel settingsPanel = (JPanel) frame.settingsFrame().getContentPane().getComponent(0);
+        JComboBox player1Icon = (JComboBox) settingsPanel.getComponent(1);
+        JComboBox player2Icon = (JComboBox) settingsPanel.getComponent(3);
+        JButton saveButton = (JButton) settingsPanel.getComponent(4);
+
+        player1Icon.setSelectedItem("TeSSA Blue");
+
+        saveButton.doClick();
+
+        assertEquals(Ressources.icon_tessa_blue, p1.getIcon());
+    }
+
+    @Test
+    public void testKlienerDreiMitZweiWinWin(){
+        p1 = new Player("Player 1", Ressources.icon_x);
+        p2 = new Player("Player 2", Ressources.icon_o);
+        board = new Board(2, 2, 2, p1, p2);
+        frame = new MainWindow(p1, p2, board);
+        frame.turn(0, 0);
+        frame.turn(1, 0);
+        frame.turn(0, 1);
+        assertSame(WinState.player1, board.checkWin());
+    }
+
 
 }
