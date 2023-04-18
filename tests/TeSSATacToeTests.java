@@ -604,6 +604,8 @@ public class TeSSATacToeTests {
         assertNotEquals(p1.getIcon(), p2.getIcon());
     }
 
+
+
     @Test
     public void testeSpielFeldGroeße()
     {
@@ -636,6 +638,19 @@ public class TeSSATacToeTests {
     {
         p1.setIcon(Ressources.icon_tessa_blue);
         assertSame("TeSSA blue",p1.getIconString());
+    }
+    @Test
+    public void testSetDifferentIcon(){
+        JPanel settingsPanel = (JPanel) frame.settingsFrame().getContentPane().getComponent(0);
+        JComboBox player1Icon = (JComboBox) settingsPanel.getComponent(1);
+        JComboBox player2Icon = (JComboBox) settingsPanel.getComponent(3);
+        JButton saveButton = (JButton) settingsPanel.getComponent(4);
+
+        player1Icon.setSelectedItem("X");
+        player2Icon.setSelectedItem("O");
+
+        saveButton.doClick();
+        assertNotEquals(p1.getIcon(), p2.getIcon());
     }
 
 }
