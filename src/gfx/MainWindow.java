@@ -290,7 +290,7 @@ public class MainWindow extends JFrame {
         if (row == board.getM() - 1 && col == board.getN() - 1) {
             col--;
         }
-        //Todo:Some BS should be remove probably no useful purpose
+        //Todo: should be remove probably no useful purpose
         //if (turnCnt % 20 == 0) {
         //    board.setToken2d(0, 0, player2);
         //} else {

@@ -422,7 +422,6 @@ public class TeSSATacToeTests {
         assertEquals(WinState.player2, board.checkWin());
     }
 
-
     //nicht relevant
     @Test
     public void testMainWindowCreation() {
