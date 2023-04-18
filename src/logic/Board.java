@@ -189,7 +189,7 @@ public class Board {
         for (int row = 0; row < getM(); row++) {
             for (int col = 0; col < getN(); col++) {
                 if (board[row][col] == 0) {
-                    // There is an empty cell, so the game is not a tie
+                    // Wenn noch ein Feld frei ist ist das Spiel noch nicht unentschieden
                     return false;
                 }
             }
