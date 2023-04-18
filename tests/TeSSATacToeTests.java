@@ -9,6 +9,10 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import javax.swing.*;
+
+import java.awt.event.ActionEvent;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TeSSATacToeTests {
@@ -139,6 +143,55 @@ public class TeSSATacToeTests {
         zug(0, 1); //o
         zug(3, 0); //x
         assertSame(WinState.none, testCheckWinState());
+    }
+
+    @Test
+    public void testBeiUntentschiedenkeinPunkt1() {
+        zug(0,1);//x
+        zug(0,0);//o
+        zug(0,2);//x
+//Reihe 1
+        zug(1,1);//o
+        zug(1,0);//x
+        zug(1,2);//o
+//Reihe 2
+        zug(2,1);//x
+        zug(2,0);//o
+        zug(2,2);//x
+//Reihe 3
+        zug(3,1);//o
+        zug(3,0);//x
+//Act
+        zug(3,2);//o
+//Assert
+
+
+        testCheckWinner(WinState.tie);
+        assertEquals(0, Integer.valueOf(getPlayer1Score()));
+    }
+
+    @Test
+    public void testBeiUntentschiedenkeinPunkt2() {
+        zug(0,1);//x
+        zug(0,0);//o
+        zug(0,2);//x
+//Reihe 1
+        zug(1,1);//o
+        zug(1,0);//x
+        zug(1,2);//o
+//Reihe 2
+        zug(2,1);//x
+        zug(2,0);//o
+        zug(2,2);//x
+//Reihe 3
+        zug(3,1);//o
+        zug(3,0);//x
+//Act
+        zug(3,2);//o
+//Assert
+
+        testCheckWinner(WinState.tie);
+        assertEquals(0, Integer.valueOf(getPlayer2Score()));
     }
 
     // Fehler 5
@@ -445,4 +498,97 @@ public class TeSSATacToeTests {
         String[] args = {"1"};
         TeSSA_Tac_Toe.main(args);
     }
+
+    @Test
+    public void testGetOIconString() {
+        // Arrange
+        ImageIcon icon = Ressources.icon_x;
+        String expected = "X";
+
+        // Act
+        String actual = p1.getIconString();
+
+        // Assert
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testGetTessaRedIconString() {
+        Player p3 = new Player("Bob", Ressources.icon_tessa_red);
+        // Arrange
+        ImageIcon icon = Ressources.icon_tessa_red;
+        String expected = "TeSSA red";
+
+        // Act
+        String actual = p3.getIconString();
+
+        // Assert
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testGetTessaBlueIconString() {
+        Player p3 = new Player("Bob", Ressources.icon_tessa_blue);
+        // Arrange
+        ImageIcon icon = Ressources.icon_tessa_blue;
+        String expected = "TeSSA blue";
+
+        // Act
+        String actual = p3.getIconString();
+
+        // Assert
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testGetXIconString() {
+        // Arrange
+        ImageIcon icon = Ressources.icon_o;
+        String expected = "O";
+
+        // Act
+        String actual = p2.getIconString();
+
+        // Assert
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testGetEmptyIconString() {
+        // Arrange
+        Player p3 = new Player("Bob", Ressources.icon_none);
+        String expected = "";
+
+        // Act
+        String actual = p3.getIconString();
+
+        // Assert
+        assertEquals(expected, actual);
+    }
+
+
+    @Test
+    public void testMainDebugFalse() {
+        String[] args = {"0"};
+        TeSSA_Tac_Toe.main(args);
+        assertFalse(MainWindow.isDefaultLookAndFeelDecorated());
+    }
+
+    @Test
+    public void testMainDefaultBoard() {
+        TeSSA_Tac_Toe.main(new String[]{}); // default board
+        assertEquals(4, board.getN());
+        assertEquals(4, board.getM());
+        assertEquals(3, board.getK());
+    }
+
+    @Test
+    public void testMainCustomBoard() {
+        TeSSA_Tac_Toe.main(new String[]{"4", "4", "3"});
+        assertEquals(4, board.getN());
+        assertEquals(4, board.getM());
+        assertEquals(3, board.getK());
+    }
+
+
 }

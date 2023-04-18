@@ -149,6 +149,7 @@ public class MainWindow extends JFrame {
         JButton b_save = new JButton("Save changes");
         b_save.addActionListener(new ActionListener() {
 
+            //Todo: some private stuff here
             @Override
             public void actionPerformed(ActionEvent e) {
                 // int m = (int) spinner_m.getValue(), n = (int) spinner_n.getValue();
