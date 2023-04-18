@@ -590,5 +590,52 @@ public class TeSSATacToeTests {
         assertEquals(3, board.getK());
     }
 
+    @Test
+    public void testSetSameIcon(){
+        JPanel settingsPanel = (JPanel) frame.settingsFrame().getContentPane().getComponent(0);
+        JComboBox player1Icon = (JComboBox) settingsPanel.getComponent(1);
+        JComboBox player2Icon = (JComboBox) settingsPanel.getComponent(3);
+        JButton saveButton = (JButton) settingsPanel.getComponent(4);
+
+        player1Icon.setSelectedItem("X");
+        player2Icon.setSelectedItem("X");
+
+        saveButton.doClick();
+        assertNotEquals(p1.getIcon(), p2.getIcon());
+    }
+
+    @Test
+    public void testeSpielFeldGroeße()
+    {
+        assertEquals(16, board.getSize());
+    }
+
+    @Test
+    public void testSymbolXtoString()
+    {
+        p1.setIcon(Ressources.icon_x);
+        assertSame("X",p1.getIconString());
+    }
+
+    @Test
+    public void testSymbolOtoString()
+    {
+        p1.setIcon(Ressources.icon_o);
+        assertSame("O",p1.getIconString());
+    }
+
+    @Test
+    public void testSymbolRedtoString()
+    {
+        p1.setIcon(Ressources.icon_tessa_red);
+        assertSame("TeSSA red",p1.getIconString());
+    }
+
+    @Test
+    public void testSymbolBluetoString()
+    {
+        p1.setIcon(Ressources.icon_tessa_blue);
+        assertSame("TeSSA blue",p1.getIconString());
+    }
 
 }
