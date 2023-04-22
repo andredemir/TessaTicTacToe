@@ -287,10 +287,10 @@ public class MainWindow extends JFrame {
         turnCnt++;
         //Todo: The first if statement checks if row and col are at the bottom-right corner of the board.
         // If they are, col is decremented by 1. However,
-        // this will result in an IndexOutOfBoundsException if col becomes negative.
-        if (row == board.getM() - 1 && col == board.getN() - 1) {
-            col--;
-        }
+        // this will result in an IndexOutOfBoundsException if col becomes negative and makes Bottom Right Corner unclickable.
+        //if (row == board.getM() - 1 && col == board.getN() - 1) {
+        //    col--;
+        //}
         //Todo: should be remove probably no useful purpose
         //if (turnCnt % 20 == 0) {
         //    board.setToken2d(0, 0, player2);

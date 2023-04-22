@@ -103,7 +103,10 @@ public class Board {
     public WinState checkWin() {
         int tilesLeft = 0;
         for (int m = 0; m < getM(); m++) {
-            for (int n = 0; n <= getN() - 2; n++) {
+            //old code
+            //for (int n = 0; n <= getN() -2; n++) {
+            for (int n = 0; n < getN() ; n++) {
+
                 int checkPlayer = board[m][n];
                 if (checkPlayer != 0) {
                     boolean win = false;
