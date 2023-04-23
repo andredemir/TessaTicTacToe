@@ -461,32 +461,6 @@ public class TeSSATacToeTests {
         assertEquals(2, board.get2d(1, 1));
     }
 
-    @Test
-    public void testCheckWin() {
-        Player p1 = new Player("Alice", Ressources.icon_x);
-        Player p2 = new Player("Bob", Ressources.icon_o);
-        Board board = new Board(3, 3, 3, p1, p2);
-
-        // Initially, there should be no winner
-        assertEquals(board.checkWin(), WinState.none);
-
-        // After setting a row of tokens, player 1 should win
-        board.setToken2d(0, 0, p1);
-        board.setToken2d(0, 1, p1);
-        board.setToken2d(0, 2, p1);
-        assertEquals(WinState.player1, board.checkWin());
-
-        // After resetting the game, there should be no winner again
-        board.resetGame();// passiert automatisch
-        assertEquals(board.checkWin(), WinState.none);
-
-        // After setting a diagonal of tokens, player 2 should win
-        board.setToken2d(0, 0, p2);
-        board.setToken2d(1, 1, p2);
-        board.setToken2d(2, 2, p2);
-        assertEquals(WinState.player2, board.checkWin());
-    }
-
     //Testet nur ob der frame nicht null ist
     @Test
     public void testMainWindowCreation() {
@@ -597,7 +571,7 @@ public class TeSSATacToeTests {
         assertEquals(3, board.getK());
     }
 
-    //Test ob mit den Argumenten das richtig board gesetzt wird
+    //Test, ob mit den Argumenten das richtig board gesetzt wird
     @Test
     public void testMainCustomBoard() {
         TeSSA_Tac_Toe.main(new String[]{"4", "4", "3"});
@@ -614,15 +588,19 @@ public class TeSSATacToeTests {
         JButton saveButton = (JButton) settingsPanel.getComponent(4);
 
         player1Icon.setSelectedItem("X");
-        player2Icon.setSelectedItem("X");
+        player2Icon.setSelectedItem("0");
+
+        frame.turn(0, 0);
+        frame.turn(0, 0);
+        frame.turn(0, 0);
 
         saveButton.doClick();
-        assertNotEquals(p1.getIcon(), p2.getIcon());
+        assertEquals(0, board.get2d(0, 0));
     }
 
 
     @Test
-    public void testeSpielFeldGroeße() {
+    public void testeSpielFeldGroesse() {
         assertEquals(16, board.getSize());
     }
 

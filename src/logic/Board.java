@@ -103,14 +103,12 @@ public class Board {
     public WinState checkWin() {
         int tilesLeft = 0;
         for (int m = 0; m < getM(); m++) {
-            //old code
-            //for (int n = 0; n <= getN() -2; n++) {
-            for (int n = 0; n < getN() ; n++) {
-
+            for (int n = 0; n < getN(); n++) {
                 int checkPlayer = board[m][n];
                 if (checkPlayer != 0) {
                     boolean win = false;
-                    // rows
+
+                    // prüfen, ob es einen Sieg gibt
                     if ((n + k <= getN())) {
                         win = true;
                         for (int i = 0; i < getK(); i++) {
@@ -120,7 +118,24 @@ public class Board {
                             }
                         }
                     }
-                    if (!win && m + k <= getM()) {
+
+                    // wenn es einen Sieg gibt, prüfen, ob noch ein leeres Feld vorhanden war
+                    if (win) {
+                        boolean emptyTileFound = false;
+                        for (int i = 0; i < getN(); i++) {
+                            if (board[m][i] == 0 && i != n + getK()) {
+                                emptyTileFound = true;
+                                break;
+                            }
+                        }
+                        if (emptyTileFound) {
+                            return WinState.none;
+                        } else {
+                            // kein leeres Feld in der Reihe gefunden, Sieg bestätigt
+                            return WinState.values()[checkPlayer];
+                        }
+                    } else if (m + k <= getM()) {
+                        // prüfen, ob es einen Sieg gibt
                         win = true;
                         for (int i = 0; i < getK(); i++) {
                             if (checkPlayer != board[m + i][n]) {
@@ -128,74 +143,39 @@ public class Board {
                                 break;
                             }
                         }
-                    }
-                    if (!win) {
-                        win = true;
-                        for (int i = 0; i < getK(); i++) {
-                            if (checkPlayer != board[(m + i) % getM()][n]) {
-                                win = false;
-                                break;
+
+                        // wenn es einen Sieg gibt, prüfen, ob noch ein leeres Feld vorhanden war
+                        if (win) {
+                            boolean emptyTileFound = false;
+                            for (int i = 0; i < getM(); i++) {
+                                if (board[i][n] == 0 && i != m + getK()) {
+                                    emptyTileFound = true;
+                                    break;
+                                }
+                            }
+                            if (emptyTileFound) {
+                                return WinState.none;
+                            } else {
+                                // kein leeres Feld in der Reihe gefunden, Sieg bestätigt
+                                return WinState.values()[checkPlayer];
                             }
                         }
-                    }
-                    if (!win && (m + k <= getM()) && (n + k <= getN())) {
-                        win = true;
-                        for (int i = 0; i < getK(); i++) {
-                            if (checkPlayer != board[m + i][n + i]) {
-                                win = false;
-                            }
-                            if (getM() < 3 && getN() < 3) {
-                                win = true;
-                            }
-                        }
-                    }
-                    if (!win && (m + k <= getM()) && (n - (k - 1) >= 0)) {
-                        win = true;
-                        for (int i = 0; i < getK(); i++) {
-                            if (checkPlayer != board[m + i][n - i]) {
-                                win = false;
-                                break;
-                            }
-                        }
-                    }
-                    if (!win && (m + 1 < getM()) && (n + 1 < getN())) {
-                        win = true;
-                        if (checkPlayer != board[m][n]) {
-                            win = false;
-                        }
-                        if (checkPlayer != board[m + 1][n]) {
-                            win = false;
-                        }
-                        if (checkPlayer != board[m + 1][n + 1]) {
-                            win = false;
-                        }
-                    }
-                    if (!win && (m + 1 < getM()) && (n + 2 < getN())) {
-                        win = true;
-                        if (checkPlayer != board[m][n]) {
-                            win = false;
-                        }
-                        if (checkPlayer != board[m][n + 2]) {
-                            win = false;
-                        }
-                        if (checkPlayer != board[m + 1][n + 1]) {
-                            win = false;
-                        }
-                    }
-                    if (win) {
-                        return WinState.values()[checkPlayer];
+                    } else {
+                        // kein Sieg und kein leeres Feld in der Reihe gefunden
+                        tilesLeft++;
                     }
                 } else {
+                    // leeres Feld gefunden
                     tilesLeft++;
                 }
             }
         }
-        if (tilesLeft == 0)
-
-        {
+        if (tilesLeft == 0) {
+            // Unentschieden
             return WinState.tie;
         }
 
+        // kein Sieg und kein Unentschieden
         return WinState.none;
     }
 }
