@@ -314,26 +314,42 @@ public class TeSSATacToeTests {
         assertSame(WinState.player1, board.checkWin());
     }
 
-    //könnte Fehler 5 sein von den gegeben Tests
+    //todo Ist fertig; Bugfix in Ressource
     @Test
+    @DisplayName("Die falsche Farbe wurde angezeigt. Die richtigen Ressourcen müssen genommen werden")
     public void tessaBlueFunktioniertNicht() {
-        //Arrange
-        p1 = new Player("Player 1", Ressources.icon_tessa_blue);
-        //Assert
-        assertSame(p1.getIcon(), MainWindow.class.getResource("/res/tessa_b.png"));
+        JPanel settingsPanel = (JPanel) frame.settingsFrame().getContentPane().getComponent(0);
+        JComboBox player1Icon = (JComboBox) settingsPanel.getComponent(1);
+        JComboBox player2Icon = (JComboBox) settingsPanel.getComponent(3);
+        JButton saveButton = (JButton) settingsPanel.getComponent(4);
+
+        player1Icon.setSelectedItem("TeSSA Blue");
+        saveButton.doClick();
+
+        Player p3 = new Player("Player 3", Ressources.icon_x);
+        p3.setIcon(new ImageIcon(MainWindow.class.getResource("/res/tessa_b.png")));
+
+        assertEquals(p3.getIcon().toString(), p1.getIcon().toString());
     }
 
-    //könnte Fehler 5 sein von den gegeben Tests
-    //ToDo: einmal besprechen
+    //todo Ist fertig; Bugfix in MainWindow
     @Test
+    @DisplayName("Auswählen des richtigen Icons nicht möglich; " +
+            "Spieler 2 wird beim ändern des Icons in den Settings, " +
+            "wenn Spieler 1 -X- ist, zu -Tessa Blue- nachdem man den Button -save changes- klickt")
     public void bleibtTessaBlue() {
-        //Arrange
-        p2 = new Player("Player 2", Ressources.icon_o);
-        //Act
-        p2.setIcon(Ressources.icon_tessa_blue);
-        p2.setIcon(Ressources.icon_o); //Assert
-        assertSame(p2.getIconString(), "O");
-        assertSame(p2.getIcon(), MainWindow.class.getResource("/res/o.png"));
+        JPanel settingsPanel = (JPanel) frame.settingsFrame().getContentPane().getComponent(0);
+        JComboBox player1Icon = (JComboBox) settingsPanel.getComponent(1);
+        JComboBox player2Icon = (JComboBox) settingsPanel.getComponent(3);
+        JButton saveButton = (JButton) settingsPanel.getComponent(4);
+
+        player1Icon.setSelectedItem("X");
+        player2Icon.setSelectedItem("O");
+
+        saveButton.doClick();
+
+        assertEquals(Ressources.icon_o, p2.getIcon());
+
     }
 
     // ------------------- OUR TESTS END -------------------

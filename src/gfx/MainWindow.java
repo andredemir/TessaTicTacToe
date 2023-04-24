@@ -138,7 +138,7 @@ public class MainWindow extends JFrame {
         // spinner_k.setValue(board.getK());
 
         JLabel l_player1 = new JLabel("Player 1 Icon:");
-        String[] items = { "X", "O", "TeSSA Red", "TeSSA Blue" };
+        String[] items = {"X", "O", "TeSSA Red", "TeSSA Blue"};
 
         JComboBox<String> combo_p1 = new JComboBox<>(items);
 
@@ -197,20 +197,22 @@ public class MainWindow extends JFrame {
             public ImageIcon get_icon_for_player(String selectedItem) {
                 ImageIcon icon;
                 switch (selectedItem) {
-                case "X":
-                    icon = Ressources.icon_x;
-                    break;
-                case "O":
-                    icon = (player1.getIcon() == Ressources.icon_x) ? Ressources.icon_tessa_blue : Ressources.icon_o;
-                    break;
-                case "TeSSA Red":
-                    icon = Ressources.icon_tessa_red;
-                    break;
-                case "TeSSA Blue":
-                    icon = Ressources.icon_tessa_blue;
-                    break;
-                default:
-                    icon = Ressources.icon_o;
+                    case "X":
+                        icon = Ressources.icon_x;
+                        break;
+                    case "O":
+                        //todo Bugfix: Hier war eine Bedienung gesetzt, die komisch ist
+                        //icon = (player1.getIcon() == Ressources.icon_x) ? Ressources.icon_tessa_blue : Ressources.icon_o;
+                        icon = Ressources.icon_o;
+                        break;
+                    case "TeSSA Red":
+                        icon = Ressources.icon_tessa_red;
+                        break;
+                    case "TeSSA Blue":
+                        icon = Ressources.icon_tessa_blue;
+                        break;
+                    default:
+                        icon = Ressources.icon_o;
                 }
                 return icon;
             }
@@ -261,7 +263,7 @@ public class MainWindow extends JFrame {
 
     /**
      * A method that updates the board.
-     *  It is called after every turn.
+     * It is called after every turn.
      */
     public void updateBoard() {
         for (int m = 0; m < board.getM(); m++) {
@@ -279,6 +281,7 @@ public class MainWindow extends JFrame {
 
     /**
      * A method that checks if the game is over.
+     *
      * @param row The row of the last turn.
      * @param col The column of the last turn.
      * @return The winner of the game.
@@ -295,7 +298,7 @@ public class MainWindow extends JFrame {
         //if (turnCnt % 20 == 0) {
         //    board.setToken2d(0, 0, player2);
         //} else {
-            board.setToken2d(row, col, board.getActivePlayer());
+        board.setToken2d(row, col, board.getActivePlayer());
         //}
         WinState winner = board.checkWin();
         if (DEBUG) {
@@ -315,22 +318,22 @@ public class MainWindow extends JFrame {
             String title = "";
             String msg = "";
             switch (winner) {
-            case tie:
-                msg = "The game ended with a draw!";
-                title = "The game tied!";
-                break;
-            case player1:
-            case player2:
-                title = "A player won the match!";
-                msg = ((WinState.player1 == winner) ? this.player1.getName() : this.player2.getName())
-                        + " won the match!";
-            default:
-                break;
+                case tie:
+                    msg = "The game ended with a draw!";
+                    title = "The game tied!";
+                    break;
+                case player1:
+                case player2:
+                    title = "A player won the match!";
+                    msg = ((WinState.player1 == winner) ? this.player1.getName() : this.player2.getName())
+                            + " won the match!";
+                default:
+                    break;
             }
             if (WinState.player1 == winner) {
                 //TODO: | (015 & 1)) << (0xFF ^ 0xFD))
                 getPlayer1_score()
-                        .setText("" + ((Integer.valueOf(getPlayer1_score().getText()) +1)));
+                        .setText("" + ((Integer.valueOf(getPlayer1_score().getText()) + 1)));
             } else if (WinState.player2 == winner) {
                 //TODO:Überlauf 0b11111111111111111111111111111111 ^ 0x00
                 getPlayer2_score().setText(""
