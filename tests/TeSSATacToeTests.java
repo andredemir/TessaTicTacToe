@@ -314,10 +314,27 @@ public class TeSSATacToeTests {
         assertSame(WinState.player1, board.checkWin());
     }
 
-    //todo Ist fertig; Bugfix in Ressource
+    //todo Ist fertig; Bugfix in MainWindow Z.184
+    @Test
+    @DisplayName("Können zwei Icons dasselbe Icon haben? Sollte nicht sein")
+    public void testSetNotSameIcon() {
+        JPanel settingsPanel = (JPanel) frame.settingsFrame().getContentPane().getComponent(0);
+        JComboBox player1Icon = (JComboBox) settingsPanel.getComponent(1);
+        JComboBox player2Icon = (JComboBox) settingsPanel.getComponent(3);
+        JButton saveButton = (JButton) settingsPanel.getComponent(4);
+
+        player1Icon.setSelectedItem("X");
+        player2Icon.setSelectedItem("X");
+
+        saveButton.doClick();
+
+        assertNotEquals(p1.getIcon(),p2.getIcon());
+    }
+
+    //todo Ist fertig; Bugfix in Ressource Z.13
     @Test
     @DisplayName("Die falsche Farbe wurde angezeigt. Die richtigen Ressourcen müssen genommen werden")
-    public void tessaBlueFunktioniertNicht() {
+    public void tessaBlueFunktioniertIconRessource() {
         JPanel settingsPanel = (JPanel) frame.settingsFrame().getContentPane().getComponent(0);
         JComboBox player1Icon = (JComboBox) settingsPanel.getComponent(1);
         JComboBox player2Icon = (JComboBox) settingsPanel.getComponent(3);
@@ -332,12 +349,12 @@ public class TeSSATacToeTests {
         assertEquals(p3.getIcon().toString(), p1.getIcon().toString());
     }
 
-    //todo Ist fertig; Bugfix in MainWindow
+    //todo Ist fertig; Bugfix in MainWindow Z.207
     @Test
     @DisplayName("Auswählen des richtigen Icons nicht möglich; " +
             "Spieler 2 wird beim ändern des Icons in den Settings, " +
             "wenn Spieler 1 -X- ist, zu -Tessa Blue- nachdem man den Button -save changes- klickt")
-    public void bleibtTessaBlue() {
+    public void tessaBlueBeiSpieler1XSpieler2TessaBlue() {
         JPanel settingsPanel = (JPanel) frame.settingsFrame().getContentPane().getComponent(0);
         JComboBox player1Icon = (JComboBox) settingsPanel.getComponent(1);
         JComboBox player2Icon = (JComboBox) settingsPanel.getComponent(3);
@@ -595,25 +612,6 @@ public class TeSSATacToeTests {
         assertEquals(4, board.getM());
         assertEquals(3, board.getK());
     }
-
-    @Test
-    public void testSetSameIcon() {
-        JPanel settingsPanel = (JPanel) frame.settingsFrame().getContentPane().getComponent(0);
-        JComboBox player1Icon = (JComboBox) settingsPanel.getComponent(1);
-        JComboBox player2Icon = (JComboBox) settingsPanel.getComponent(3);
-        JButton saveButton = (JButton) settingsPanel.getComponent(4);
-
-        player1Icon.setSelectedItem("X");
-        player2Icon.setSelectedItem("0");
-
-        frame.turn(0, 0);
-        frame.turn(0, 0);
-        frame.turn(0, 0);
-
-        saveButton.doClick();
-        assertEquals(0, board.get2d(0, 0));
-    }
-
 
     @Test
     public void testeSpielFeldGroesse() {

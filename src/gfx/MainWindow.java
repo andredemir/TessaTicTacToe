@@ -180,14 +180,17 @@ public class MainWindow extends JFrame {
                     ep.setBackground(label.getBackground());
                     JOptionPane.showMessageDialog(settingsFrame, ep);
                 }
-                // return;
-                // }
 
-                // board.setM(m);
-                // board.setN(n);
-                // board.setK((int) spinner_k.getValue());
-                player1.setIcon(get_icon_for_player((String) combo_p1.getSelectedItem()));
-                player2.setIcon(get_icon_for_player((String) combo_p2.getSelectedItem()));
+                //todo Bugfix: Hier einfache if Anweisung eingefügt, die verhindert, dass
+                // gleiche Icons trotzdem gesetzt werden.
+                //player1.setIcon(get_icon_for_player((String) combo_p1.getSelectedItem()));
+                //player2.setIcon(get_icon_for_player((String) combo_p2.getSelectedItem()));
+
+                if(!(combo_p1.getSelectedItem().equals(combo_p2.getSelectedItem()))){
+                    player1.setIcon(get_icon_for_player((String) combo_p1.getSelectedItem()));
+                    player2.setIcon(get_icon_for_player((String) combo_p2.getSelectedItem()));
+                }
+
                 player1_label.setText(player1.getName() + " (" + player1.getIconString() + ") :");
                 player2_label.setText(player2.getName() + " (" + player2.getIconString() + ") :");
                 resetBoard();
