@@ -21,6 +21,7 @@ public class TeSSATacToeTests {
     private Player p1, p2;
     private Board board;
     private MainWindow frame;
+    private ClickOk click;
 
     private static final int TIME_OUT = 0;
 
@@ -32,6 +33,7 @@ public class TeSSATacToeTests {
         frame = new MainWindow(p1, p2, board);
         frame.setVisible(true);
         MainWindow.setDebugg(true);
+        click = new ClickOk();
     }
 
     @AfterEach
@@ -136,6 +138,7 @@ public class TeSSATacToeTests {
         zug(1, 1);
         zug(2, 2);
         zug(1, 2);
+        click.click();
         testCheckWinner(WinState.player2);
         //System.out.println(Integer.valueOf(frame.getPlayer2_score().getText()));
 
@@ -183,7 +186,7 @@ public class TeSSATacToeTests {
 //Act
         zug(3, 2);//o
 //Assert
-
+        click.click();
 
         testCheckWinner(WinState.tie);
         assertEquals(0, Integer.valueOf(getPlayer1Score()));
@@ -208,7 +211,7 @@ public class TeSSATacToeTests {
 //Act
         zug(3, 2);//o
 //Assert
-
+        click.click();
         testCheckWinner(WinState.tie);
         assertEquals(0, Integer.valueOf(getPlayer2Score()));
     }
@@ -325,9 +328,9 @@ public class TeSSATacToeTests {
 
         player1Icon.setSelectedItem("X");
         player2Icon.setSelectedItem("X");
-
+        click.click();
         saveButton.doClick();
-
+        //click.click();
         assertNotEquals(p1.getIcon(),p2.getIcon());
     }
 
@@ -649,9 +652,10 @@ public class TeSSATacToeTests {
         JComboBox player2Icon = (JComboBox) settingsPanel.getComponent(3);
         JButton saveButton = (JButton) settingsPanel.getComponent(4);
 
-        player1Icon.setSelectedItem("X");
-        player2Icon.setSelectedItem("O");
-
+        player1Icon.setSelectedItem("O");
+        player2Icon.setSelectedItem("TeSSA Red");
+        System.out.println(p1.getIconString());
+        System.out.println(p2.getIconString());
         saveButton.doClick();
         assertNotEquals(p1.getIcon(), p2.getIcon());
     }
@@ -695,6 +699,24 @@ public class TeSSATacToeTests {
         frame.turn(0, 1);
         assertSame(WinState.player1, board.checkWin());
     }
+    public class ClickOk extends Thread {
+
+        public void click(){
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(200);
+                        Robot robot = new Robot();
+                        robot.keyPress(KeyEvent.VK_ENTER);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+        }
+    }
+
 
 
 }

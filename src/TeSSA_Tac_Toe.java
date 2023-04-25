@@ -30,5 +30,4 @@ public class TeSSA_Tac_Toe {
             }
         });
     }
-
 }

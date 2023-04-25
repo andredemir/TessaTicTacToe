@@ -96,19 +96,21 @@ public class Board {
         }
     }
 
-    /**
-     * Check whether a player has won the game.
-     * @return The state of the game (WinState.none, WinState.tie, or WinState.player1/player2).
-     */
     public WinState checkWin() {
         int tilesLeft = 0;
         for (int m = 0; m < getM(); m++) {
-            for (int n = 0; n < getN(); n++) {
+        //for (int n = 0; n <= getN() - 2; n++) {
+        //old code
+            //for (int n = 0; n <= getN() -2; n++) {
+            for (int n = 0; n < getN() ; n++) {
+
                 int checkPlayer = board[m][n];
                 if (checkPlayer != 0) {
                     boolean win = false;
-
-                    // prüfen, ob es einen Sieg gibt
+                    // horizontal
+                    // checks for a horizontal win on the game board.
+                    // It checks whether there are k consecutive pieces
+                    // belonging to the same player in a row starting at the position board[m][n].
                     if ((n + k <= getN())) {
                         win = true;
                         for (int i = 0; i < getK(); i++) {
@@ -118,24 +120,13 @@ public class Board {
                             }
                         }
                     }
-
-                    // wenn es einen Sieg gibt, prüfen, ob noch ein leeres Feld vorhanden war
-                    if (win) {
-                        boolean emptyTileFound = false;
-                        for (int i = 0; i < getN(); i++) {
-                            if (board[m][i] == 0 && i != n + getK()) {
-                                emptyTileFound = true;
-                                break;
-                            }
-                        }
-                        if (emptyTileFound) {
-                            return WinState.none;
-                        } else {
-                            // kein leeres Feld in der Reihe gefunden, Sieg bestätigt
-                            return WinState.values()[checkPlayer];
-                        }
-                    } else if (m + k <= getM()) {
-                        // prüfen, ob es einen Sieg gibt
+                    // vertikal
+                    // dieser Code block überprüft, ob es einen vertikalen Gewinn auf dem Spielbrett gibt.
+                    // Es prüft mit einer Schleife durch jedes Feld der Spalte, ob es k aufeinanderfolgende Felder gibt,
+                    // die dem gleichen Spieler gehören wie das Feld in der Startposition.
+                    // Wenn ja, wird win auf true gesetzt. Wenn win bereits true ist,
+                    // bleibt es jedoch true, und die Methode gibt den entsprechenden Gewinnzustand zurück.
+                    if (!win && m + k <= getM()) {
                         win = true;
                         for (int i = 0; i < getK(); i++) {
                             if (checkPlayer != board[m + i][n]) {
@@ -143,39 +134,51 @@ public class Board {
                                 break;
                             }
                         }
+                    }
 
-                        // wenn es einen Sieg gibt, prüfen, ob noch ein leeres Feld vorhanden war
-                        if (win) {
-                            boolean emptyTileFound = false;
-                            for (int i = 0; i < getM(); i++) {
-                                if (board[i][n] == 0 && i != m + getK()) {
-                                    emptyTileFound = true;
-                                    break;
-                                }
+                    // Check for diagonal wins
+                    // where there are at least k rows and k columns remaining
+                    // to the right and below the starting position.
+                    // It checks if the k pieces in the diagonal
+                    // are either all empty or all belong to the same player.
+                    if (!win && (m + k <= getM()) && (n + k <= getN())) {
+                        win = true;
+                        for (int i = 0; i < getK(); i++) {
+                            if (checkPlayer != board[m + i][n + i]) {
+                                win = false;
+                                break;
                             }
-                            if (emptyTileFound) {
-                                return WinState.none;
-                            } else {
-                                // kein leeres Feld in der Reihe gefunden, Sieg bestätigt
-                                return WinState.values()[checkPlayer];
+                    //if (getM() < 3 && getN() < 3) {
+                    // win = true;
+                    //}
+                        }
+                    }
+                    // Check for diagonal wins from left bottom to right top
+                    // starting with at least k rows above the starting position
+                    // and at least k columns remaining to the right of the starting position.
+                    // checks if the k pieces all empty or all belong to the same player
+                    if (!win && (m + k <= getM()) && (n - (k - 1) >= 0)) {
+                        win = true;
+                        for (int i = 0; i < getK(); i++) {
+                            if (checkPlayer != board[m + i][n - i]) {
+                                win = false;
+                                break;
                             }
                         }
-                    } else {
-                        // kein Sieg und kein leeres Feld in der Reihe gefunden
-                        tilesLeft++;
+                    }
+
+                    if (win) {
+                        return WinState.values()[checkPlayer];
                     }
                 } else {
-                    // leeres Feld gefunden
                     tilesLeft++;
                 }
             }
         }
-        if (tilesLeft == 0) {
-            // Unentschieden
+        if (tilesLeft == 0)
+        {
             return WinState.tie;
         }
-
-        // kein Sieg und kein Unentschieden
         return WinState.none;
     }
 }
