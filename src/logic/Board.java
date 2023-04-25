@@ -89,7 +89,7 @@ public class Board {
         active = player1;
         board = new int[m][n];
     }
-    //:TODO: check if the field is already taken
+
     public void setToken2d(int m, int n, Player p) {
         if (board[m][n] == 0) {
             board[m][n] = (player1 == p) ? 1 : 2;
@@ -98,15 +98,19 @@ public class Board {
 
     public WinState checkWin() {
         int tilesLeft = 0;
+        // Columns durchgehen
         for (int m = 0; m < getM(); m++) {
         //for (int n = 0; n <= getN() - 2; n++) {
         //old code
             //for (int n = 0; n <= getN() -2; n++) {
+
+            // Rows durchgehen
             for (int n = 0; n < getN() ; n++) {
+                // Überprüft, ob das Feld leer ist.
                 int checkPlayer = board[m][n];
+                // wenn nicht, dann wird überprüft, ob es einen Gewinner gibt.
                 if (checkPlayer != 0) {
                     boolean win = false;
-
                     // Vertikal.
                     // sind noch K Spalten übrig um zu gewinnen?
                     if ((n + k <= getN())) {
