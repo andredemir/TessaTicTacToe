@@ -103,32 +103,31 @@ public class Board {
         //old code
             //for (int n = 0; n <= getN() -2; n++) {
             for (int n = 0; n < getN() ; n++) {
-
                 int checkPlayer = board[m][n];
                 if (checkPlayer != 0) {
                     boolean win = false;
-                    // horizontal
-                    // checks for a horizontal win on the game board.
-                    // It checks whether there are k consecutive pieces
-                    // belonging to the same player in a row starting at the position board[m][n].
+
+                    // Vertikal.
+                    // sind noch K Spalten übrig um zu gewinnen?
                     if ((n + k <= getN())) {
                         win = true;
+                        // iteriert durch die k Spalten, die überprüft werden müssen.
                         for (int i = 0; i < getK(); i++) {
+                            //Wenn das erste Stück nicht dem Spieler gehört, der den Zug gemacht hat, ist es kein Gewinn.
                             if (checkPlayer != board[m][n + i]) {
                                 win = false;
                                 break;
                             }
                         }
                     }
-                    // vertikal
-                    // dieser Code block überprüft, ob es einen vertikalen Gewinn auf dem Spielbrett gibt.
-                    // Es prüft mit einer Schleife durch jedes Feld der Spalte, ob es k aufeinanderfolgende Felder gibt,
-                    // die dem gleichen Spieler gehören wie das Feld in der Startposition.
-                    // Wenn ja, wird win auf true gesetzt. Wenn win bereits true ist,
-                    // bleibt es jedoch true, und die Methode gibt den entsprechenden Gewinnzustand zurück.
+                    // Horizontal.
+                    // überprüft, ob es auf dem Spielbrett einen horizontalen Gewinn gibt.
+                    // sind noch K spalten übrig um zu gewinnen?
                     if (!win && m + k <= getM()) {
                         win = true;
+                        //Iteriere über die Länge der diagonalen Linie.
                         for (int i = 0; i < getK(); i++) {
+                            // Wenn das erste Stück nicht dem Spieler gehört, der den Zug gemacht hat, ist es kein Gewinn.
                             if (checkPlayer != board[m + i][n]) {
                                 win = false;
                                 break;
@@ -136,37 +135,38 @@ public class Board {
                         }
                     }
 
-                    // Check for diagonal wins
-                    // where there are at least k rows and k columns remaining
-                    // to the right and below the starting position.
-                    // It checks if the k pieces in the diagonal
-                    // are either all empty or all belong to the same player.
+                    // prüft diagonale Gewinne, die an einer Position auf dem Spielbrett beginnen,
+                    // an der mindestens k Zeilen und k Spalten unter der Startposition verbleiben.
+                    // Es wird überprüft, ob die k Stücke in der Diagonale entweder alle leer oder alle demselben Spieler gehören.
                     if (!win && (m + k <= getM()) && (n + k <= getN())) {
                         win = true;
+                        //Iteriere über die Länge der diagonalen Linie.
                         for (int i = 0; i < getK(); i++) {
+                            // Wenn das erste Stück nicht dem Spieler gehört, der den Zug gemacht hat, ist es kein Gewinn.
                             if (checkPlayer != board[m + i][n + i]) {
                                 win = false;
                                 break;
                             }
-                    //if (getM() < 3 && getN() < 3) {
-                    // win = true;
-                    //}
+                    //  if (getM() < 3 && getN() < 3) {
+                    //  win = true;
+                    //  }
                         }
                     }
-                    // Check for diagonal wins from left bottom to right top
-                    // starting with at least k rows above the starting position
-                    // and at least k columns remaining to the right of the starting position.
-                    // checks if the k pieces all empty or all belong to the same player
+
+                    // überprüft auf diagonale Gewinne von links unten nach rechts oben,
+                    // beginnend an einer Position auf dem Spielbrett,
+                    // an der mindestens k Zeilen über der Startposition und mindestens k Spalten rechts von der Startposition verbleiben.
                     if (!win && (m + k <= getM()) && (n - (k - 1) >= 0)) {
                         win = true;
+                        //Iteriere über die Länge der diagonalen Linie.
                         for (int i = 0; i < getK(); i++) {
+                            //Wenn das erste Stück nicht dem Spieler gehört, der den Zug gemacht hat, ist es kein Gewinn.
                             if (checkPlayer != board[m + i][n - i]) {
                                 win = false;
                                 break;
                             }
                         }
                     }
-
                     if (win) {
                         return WinState.values()[checkPlayer];
                     }
@@ -175,8 +175,7 @@ public class Board {
                 }
             }
         }
-        if (tilesLeft == 0)
-        {
+        if (tilesLeft == 0){
             return WinState.tie;
         }
         return WinState.none;
